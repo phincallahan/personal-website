@@ -1,0 +1,83 @@
+@import url(https://fonts.googleapis.com/css?family=Hind:400,600|Noto+Serif:400,400italic,700|Droid+Sans+Mono);
+
+$font-body: Noto Serif, serif;
+$font-head: Hind, helvetica;
+$font-code: Droid Sans Mono, monospace;
+$underline-color: red;
+
+body {
+	width: 70%;
+	margin: auto;
+	font-family: $font-body;
+}
+
+h1, h2, h3 {
+	font-family: $font-head;
+}
+
+header.index-header {
+	font-size: 28px;
+	font-family: $font-head;
+
+	ul {
+		padding: 0;
+		list-style: none;
+	}
+
+	li {
+		display: inline-block;
+		margin-right: 1rem;
+		line-height: 1em;
+	}
+
+	li:hover {
+		border-bottom: 3px $underline-color solid;
+	}
+
+	li.current {
+		border-bottom: 3px $underline-color solid;
+	}
+}
+
+div.index-page {
+	display: none;
+}
+
+div.index-page.current {
+	display: block;
+}
+
+.post-container {
+	position: absolute;
+}
+
+.post {
+	font-family: $font-head;
+	position: relative;
+	margin: 1rem 0 1rem 0;
+
+	* {
+		display: inline-block;
+		margin: 0;
+	}
+
+	a:link {
+		color: inherit;
+		text-decoration: none;
+		border-bottom: 2px grey solid;
+		line-height: .95rem;
+	}
+
+	a:hover {
+		border-bottom: 2px red solid;
+	}
+
+	.post-date {
+		position: absolute;
+		left: -3.5rem;
+		font-size: .9rem;
+		width: 3rem;
+		text-align: right;
+		margin-top: .2rem;
+	}
+}

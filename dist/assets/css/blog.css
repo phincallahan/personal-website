@@ -1,0 +1,20 @@
+@import url(https://fonts.googleapis.com/css?family=Hind:400,600|Noto+Serif:400,400italic,700|Droid+Sans+Mono);
+pre {
+  font-family: Droid Sans Mono, monospace;
+  overflow-x: scroll; }
+
+body {
+  width: 100%;
+  margin: 0;
+  font-family: Noto Serif, serif; }
+
+h1 h2 h3 {
+  font-family: Hind, helvetica; }
+
+main {
+  width: 60%;
+  margin: 0;
+  padding: 0;
+  margin-left: 25%; }
+
+/*# sourceMappingURL=blog.css.map */

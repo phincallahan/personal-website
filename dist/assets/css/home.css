@@ -1,0 +1,56 @@
+@import url(https://fonts.googleapis.com/css?family=Hind:400,600|Noto+Serif:400,400italic,700|Droid+Sans+Mono);
+body {
+  width: 70%;
+  margin: auto;
+  font-family: Noto Serif, serif; }
+
+h1, h2, h3 {
+  font-family: Hind, helvetica; }
+
+header.index-header {
+  font-size: 28px;
+  font-family: Hind, helvetica; }
+  header.index-header ul {
+    padding: 0;
+    list-style: none; }
+  header.index-header li {
+    display: inline-block;
+    margin-right: 1rem;
+    line-height: 1em; }
+  header.index-header li:hover {
+    border-bottom: 3px red solid; }
+  header.index-header li.current {
+    border-bottom: 3px red solid; }
+
+div.index-page {
+  display: none; }
+
+div.index-page.current {
+  display: block; }
+
+.post-container {
+  position: absolute; }
+
+.post {
+  font-family: Hind, helvetica;
+  position: relative;
+  margin: 1rem 0 1rem 0; }
+  .post * {
+    display: inline-block;
+    margin: 0; }
+  .post a:link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 2px grey solid;
+    line-height: .95rem; }
+  .post a:hover {
+    border-bottom: 2px red solid; }
+  .post .post-date {
+    position: absolute;
+    left: -3.5rem;
+    font-size: .9rem;
+    width: 3rem;
+    text-align: right;
+    margin-top: .2rem; }
+
+/*# sourceMappingURL=home.css.map */
