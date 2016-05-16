@@ -9,24 +9,58 @@
   <body>
 	<header class = "index-header">
 	  <ul/>
-		<li>blog</li>
 		<li>about</li>
+		<li>blog</li>
+		<li>project-euler</li>
 	  </ul>	
 	</header> 
 
-	<div class = "index-page" id = "blog">
-	  <div class = "post-container">
-		{% for post in posts %}
-		  <div class = "post">
-			<span>{{post.datestring}}</span>
-			<a href = {{post.url}}>{{post.title}}</a> 
-		  </div>
-		{% endfor %}
-	  </div>
-	</div>
+	<div class = "content">
 
-	<div class = "index-page" id = "about">
-	  <p> Thats me </p>
+	  <section id = "about">
+		<h1> 
+		  Hello, I'm a student studying math</br>
+		  at Carleton College, in Northfield MN</br>
+		</h1>
+		<p>
+		  I'm interested in the intersection of Math and CS, especially,
+		  methods for finding insights and solutions in massive datasets. In the
+		  future I think I'd like to study NLP and ML, but I'm still figuring
+		  things out. In my freetime I enjoy coding, running in Carleton's Arb,
+		  reading, and laughing with my friends. 
+		</p>
+
+		<ul>
+		  <li>resume: <a href = "callahan_res.pdf">resume.pdf</a> </li>
+		  <li>email: contact@phineas.me </li>
+		  <li>
+			<a href = "https://www.github.com/phincallahan/">github</a>, 
+			<a href = "https://www.instagram.com/phincallahan14/">instagram</a>
+		  </li>
+		</ul>
+	  </section>
+
+	  <section id = "blog">
+		<div class = "post-container">
+		  {% for post in posts %}
+			<div class = "post">
+			  <span>{{post.datestring}}</span>
+			  <a href = {{post.url}}>{{post.title}}</a> 
+			</div>
+		  {% endfor %}
+		</div>
+	  </section>
+
+	  <section id = "project-euler">
+		<div class = "solution-container">
+		  {% for sol in solutions %}
+		  <div class = "solution" style = "{{sol.pos}}">
+			  <span>{{sol.num}}</span>
+		  </div>	  
+		  {% endfor %}
+		</div>
+	  </section>
 	</div>
+  </div>
   </body>
 </html>

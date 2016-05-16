@@ -1,14 +1,26 @@
-@import url(https://fonts.googleapis.com/css?family=Hind:400,600|Noto+Serif:400,400italic,700|Droid+Sans+Mono);
+@import url(https://fonts.googleapis.com/css?family=Hind:300,400,600|Noto+Serif:400,400italic,700|Droid+Sans+Mono);
 
 $font-body: Noto Serif, serif;
 $font-head: Hind, helvetica;
 $font-code: Droid Sans Mono, monospace;
-$underline-color: red;
+$underline-color: black;
 
 body {
-	width: 70%;
+    color: #4d4d4d;
+}
+
+.content {
+	width: 60%;
 	margin: auto;
 	font-family: $font-body;
+}
+
+section {
+    display: none;
+}
+
+section.current {
+    display: block;
 }
 
 h1, h2, h3 {
@@ -16,8 +28,13 @@ h1, h2, h3 {
 }
 
 header.index-header {
-	font-size: 28px;
+    margin-top: 70px;
+    margin-left: 80px;
+    margin-bottom: 60px;
+
+	font-size: 24px;
 	font-family: $font-head;
+    font-weight: 300;
 
 	ul {
 		padding: 0;
@@ -31,11 +48,11 @@ header.index-header {
 	}
 
 	li:hover {
-		border-bottom: 3px $underline-color solid;
+		border-bottom: 1px $underline-color solid;
 	}
 
 	li.current {
-		border-bottom: 3px $underline-color solid;
+		border-bottom: 1px $underline-color solid;
 	}
 }
 
@@ -80,4 +97,49 @@ div.index-page.current {
 		text-align: right;
 		margin-top: .2rem;
 	}
+}
+
+#about {
+    h1 {
+        font-size: 2.2rem; 
+        line-height: 1.2;
+        color: #262626;
+    }
+    
+    p {
+        width: 55%;
+        line-height: 1.8;
+    }
+
+    ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    a {
+        text-decoration: none;
+        border-bottom: 1px $underline-color solid;
+        color: inherit;
+    }
+}   
+
+.solution-container {
+    width: 25rem;
+    height: 2.5rem;
+    position: absolute;
+
+    .solution {
+        position: absolute;
+        display: table;
+        width: 2rem;
+        height: 2rem;
+        margin: .25rem;
+        border: 1px black solid;
+        text-align: center;
+    }
+    
+    .solution span {
+        display: table-cell;
+        vertical-align: middle;
+    }
 }

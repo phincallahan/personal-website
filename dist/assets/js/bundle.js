@@ -7,7 +7,9 @@ function setActiveSection(sectionObj) {
 		currentSection = sectionObj;
 		currentSection.toggle();
 		window.location.replace('#'+sectionObj.key);
-	}
+	}    
+    console.log(window.scrollY);
+    window.scrollTo(0, 0);
 }
 
 function findSection(element) {

@@ -59,7 +59,12 @@ module.exports = function(grunt) {
 			sass: {
 				files: 'src/scss/*.scss',
 				tasks: ['stylesheets']
-			}	
+            },	
+
+            html: {
+                files: 'src/views/*.html',
+                tasks: ['build']
+            }
 
 		},
 
@@ -74,7 +79,28 @@ module.exports = function(grunt) {
 					watchTask: true
 				}
 			}
-		}
+		},
+
+        copy: {
+            main: {
+                expand: true,
+                cwd: 'src/resources',
+                src: '**',
+                dest: 'dist/assets'
+            },
+        },
+
+        shell: {
+            pull: {
+                command: 'git pull',
+                options: {
+                    stderr: false,
+                    execOptions: {
+                        cwd: 'src/project-euler'
+                    }
+                }
+            }
+        }
 	});
 
 
@@ -84,6 +110,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-browserify');
 	grunt.loadNpmTasks('grunt-postcss');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-shell');
 
 	grunt.registerTask('static_gen', 'Compiles static website', function() {
         var p_path = __dirname+'/src/posts';
@@ -100,7 +128,6 @@ module.exports = function(grunt) {
             attr.url = 'blog/'+attr.path;
             return attr;
         }
-
         function ensureDirectory(p) {
             try {
                 fs.statSync(path.dirname(p));
@@ -139,12 +166,28 @@ module.exports = function(grunt) {
         var locals = new Object();
         locals.posts = posts.map(function(p) { return p.attributes; });
         
+        var paths = (fs.readdirSync('src/project-euler')).filter(function(p) {
+            return !p.includes('.');
+        });
+
+        locals.solutions = paths.map(function(p) {
+            var sol = {
+                num : p,
+                pos : "left: "+String(10*((Number(p)-1)%10))+"%;"+
+                      "top: "+String(100*(Math.floor((Number(p)-1)/10)))+"%;"
+            };
+            return sol;
+        });
+        
+        console.log(locals.solutions);
+        
         var index = swig.renderFile('src/views/home.html', locals);
         fs.writeFile(__dirname+'/dist/index.html', index);
 	});
 
 	grunt.registerTask('stylesheets', ['sass', 'postcss']);
-    grunt.registerTask('build', ['clean', 'static_gen', 'stylesheets', 'browserify']);
+    grunt.registerTask('compile', ['shell', 'static_gen']);
+    grunt.registerTask('build', ['clean', 'compile', 'stylesheets', 'browserify', 'copy']);
 	grunt.registerTask('default', ['build', 'browserSync', 'watch']);
 
 }
