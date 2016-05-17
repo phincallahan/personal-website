@@ -86,7 +86,7 @@ function setUpEuler() {
     d3.json("euler.json", function(error, data) {
         if(error) console.log(error);
 
-        var margin = .075;
+        var margin = 2;
         var boxDim = 30;
         var tableDim = width/boxDim;
 
@@ -107,10 +107,10 @@ function setUpEuler() {
                             .enter().append("g");
 
         rect.append("rect")
-            .attr("x", function(d) {return x(d.number)+boxDim*margin;})
-            .attr("y", function(d) {return y(d.number)+boxDim*margin;})
-            .attr("width", boxDim*(1-2*margin))
-            .attr("height", boxDim*(1-2*margin))
+            .attr("x", function(d) {return x(d.number)+margin;})
+            .attr("y", function(d) {return y(d.number)+margin;})
+            .attr("width", boxDim-2*margin)
+            .attr("height", boxDim-2*margin)
             .attr("fill", "none")
             .attr("stroke-width", 1)
             .attr("stroke", "black")
