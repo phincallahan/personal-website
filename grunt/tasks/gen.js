@@ -6,26 +6,42 @@ module.exports = function(grunt) {
     grunt.registerTask('gen', 'Compiles static website', function() {
         var locals = new Object();
         locals.posts = mkposts();
-        locals.solutions = mkprojecteuler();
+        grunt.file.write('dist/assets/euler.json', JSON.stringify(mkprojecteuler()));
         
         var index = swig.renderFile('src/views/home.html', locals);
         grunt.file.write('dist/index.html', index);
 	});
 
     function mkprojecteuler() {
-        var pattern = '[0-9]*'
+        var info = grunt.file.readJSON('content/project-euler/info.json');
+        var meta = info['meta'];
+        var pattern = '[0-9]*';
+
         var paths = grunt.file.expand({cwd : 'content/project-euler'}, pattern);
         var solutions = paths.map(function(p) {
+            var id = Number(p);
+            if(info.solved.indexOf(id)) {
+                info.solved.splice(info.solved.indexOf(id), 1);
+            }
+
             var sol = {
-                num : p,
-                pos : "left: "+String(10*((Number(p)-1)%10))+"%;"+
-                      "top: "+String(100*(Math.floor((Number(p)-1)/10)))+"%;"
+                number : p,
+                difficulty : meta[id]['difficulty'],
+                title : meta[id]['title']
             };
             return sol;
         });
-
-        console.log(solutions);
         
+        solutions = solutions.concat(info.solved.map(function(p) {
+            var id = Number(p);
+            var sol = {
+                number : p,
+                difficulty : meta[id]['difficulty'],
+                title : meta[id]['title']
+            };
+            return sol;
+        }));
+
         return solutions;
     }
 

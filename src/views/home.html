@@ -5,6 +5,7 @@
 	<link href='https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Hind:400,600' rel='stylesheet' type='text/css'>
 	<link href="css/home.css" rel="stylesheet">
 	<script src="js/bundle.js" type='text/javascript'></script>
+	<script src="http://d3js.org/d3.v3.min.js"  charset="utf-8"></script>  
   </head>
   <body>
 	<header class = "index-header">
@@ -52,13 +53,8 @@
 	  </section>
 
 	  <section id = "project-euler">
-		<div class = "solution-container">
-		  {% for sol in solutions %}
-		  <div class = "solution" style = "{{sol.pos}}">
-			  <span>{{sol.num}}</span>
-		  </div>	  
-		  {% endfor %}
-		</div>
+		<svg class = "solution-container">
+		</svg>
 	  </section>
 	</div>
   </div>

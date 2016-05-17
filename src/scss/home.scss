@@ -28,8 +28,8 @@ h1, h2, h3 {
 }
 
 header.index-header {
-    margin-top: 70px;
-    margin-left: 80px;
+    margin-top: 40px;
+    margin-left: 50px;
     margin-bottom: 60px;
 
 	font-size: 24px;
@@ -124,22 +124,6 @@ div.index-page.current {
 }   
 
 .solution-container {
-    width: 25rem;
-    height: 2.5rem;
+    font-size: .75rem;
     position: absolute;
-
-    .solution {
-        position: absolute;
-        display: table;
-        width: 2rem;
-        height: 2rem;
-        margin: .25rem;
-        border: 1px black solid;
-        text-align: center;
-    }
-    
-    .solution span {
-        display: table-cell;
-        vertical-align: middle;
-    }
 }
