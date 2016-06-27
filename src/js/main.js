@@ -1,14 +1,8 @@
 window.onload = function() {
     var sections = setUpNav();
-
-              
-    sections['project-euler'].forEach(function(element) {
-        element.classList.toggle('current');
-    });
-    setUpEuler();
-    sections['project-euler'].forEach(function(element) {
-        element.classList.toggle('current');
-    });
+    var container = document.getElementsByClassName("solution-container")[0];
+    layout(container.firstElementChild, 20, 30);
+    container.style.display = "block";
 }
 
 function setUpNav() {
@@ -52,75 +46,70 @@ function setUpNav() {
     return sections;
 }
 
-function setUpEuler() {
-    /**
-    var solutions = document.querySelectorAll(".solution");
+window.showMenu = (function () {
+    var active = null;
 
-    var solved = Array.from(solutions).map(function(s) {
-        return Number(s.childNodes[1].textContent);
-    });
+    function expand(el, size) {
+        el.classList.add("active");
+        var popup = el.getElementsByClassName("solution-content")[0];
+        var curr = el.nextElementSibling;
 
-    var max = Math.max.apply(null, solved);
+        curr.addEventListener("transitionend", function(e) {
+            if(el == active) {
+                popup.classList.add("visible");
+                popup.style.left = "-"+el.style.left;
+            }
+            e.target.removeEventListener(e.type, arguments.callee);
+        });
 
-    var container = document.querySelector(".solution-container");
-    var cwidth = Number(window.getComputedStyle(container)
-                              .getPropertyValue("width")
-                              .replace("px", ""));
+        popup.classList.add("visible");
+        var trans = "translateY("+(popup.offsetHeight+size)+"px)";
+        popup.classList.remove("visible");
+        window.scrollX;
 
-    var swidth = solutions[0].scrollWidth*1.25;
-    container.style.height = String(Math.ceil(max/(cwidth/swidth))*swidth)+"px";
+        while(curr) {
+            curr.style.transform = trans;
+            curr = curr.nextElementSibling;
+        }
 
-    for(var i = 0; i < solutions.length; i++) {
-        var node = solutions[i];
-        var num = Number(node.childNodes[1].textContent);
-        node.style.left = String(((num-1)%(cwidth/swidth))*(swidth))+"px";
-        node.style.top = String((Math.floor((num-1)/(cwidth/swidth))*swidth))+"px";
-        console.log(cwidth/swidth);
     }
-     **/
 
-    var container = d3.select(".solution-container");
-    var width = 600;
-    container.attr("width", width);
+    function hide(el) {
+        el.classList.remove("active");
+        var popup = el.getElementsByClassName("solution-content")[0];
+        popup.classList.remove("visible");
 
-    d3.json("euler.json", function(error, data) {
-        if(error) console.log(error);
-
-        var margin = 2;
-        var boxDim = 30;
-        var tableDim = width/boxDim;
-
-        var max = d3.max(data, function(d) {return d.number;}); 
-        var height = Math.ceil(max/(width/boxDim))*boxDim + Math.floor(max/100)*6;
-        container.attr("height", height);
-
-        function x(d) {
-            return (d-1)%tableDim*boxDim;
+        var curr = el.nextElementSibling;
+        while(curr) {
+            curr.style.transform = "translateY(0px)";
+            curr = curr.nextElementSibling;
         }
+    }
 
-        function y(d) {
-            return Math.floor((d-1)/tableDim)*boxDim + Math.floor((d-1)/100)*6;
+    function toggle(el) {
+        if(el.classList.contains("active")) {
+            hide(el);
+            active = null;
         }
+        else {
+            if (active)
+                hide(active);
 
-        var rect = container.selectAll("g")
-                            .data(data)
-                            .enter().append("g");
+            active = el;
+            expand(el, 30);
+        }
+    }
 
-        rect.append("rect")
-            .attr("x", function(d) {return x(d.number)+margin;})
-            .attr("y", function(d) {return y(d.number)+margin;})
-            .attr("width", boxDim-2*margin)
-            .attr("height", boxDim-2*margin)
-            .attr("fill", "none")
-            .attr("stroke-width", 1)
-            .attr("stroke", "black")
-            .attr("shape-rendering", "crisp-edges");
-        
-        rect.append("text")
-            .attr("x", function(d) {return x(d.number)+boxDim/2;})
-            .attr("y", function(d) {return y(d.number)+boxDim/2;})
-            .text(function(d) {return d.number;})
-            .style("text-anchor", "middle")
-            .style("alignment-baseline", "central");
-    });
+    return toggle;
+})();
+
+window.layout = function(el, rowCount, size) {
+    var curr = el; 
+    while(curr && curr.classList.contains("solution")) {
+        var id = Number(curr.firstElementChild.getElementsByTagName("SPAN")[0].textContent);
+        curr.style.left = String(((id-1) % rowCount) * size) + "px";
+        curr.style.top = String((Math.floor((id-1) / rowCount)) * size + 5 * Math.floor((id - 1) / 100)) + "px";
+        curr = curr.nextElementSibling;
+    }
 }
+

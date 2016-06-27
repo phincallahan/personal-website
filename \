@@ -1,0 +1,173 @@
+window.onload = function() {
+    var sections = setUpNav();
+}
+
+function setUpNav() {
+	var headerElements = document.querySelectorAll("header li");
+	var sections = new Map();
+
+	for(var i = 0; i < headerElements.length; i++)	{
+		sections[headerElements[i].textContent] = [
+            document.querySelector("#"+headerElements[i].textContent),
+            headerElements[i]
+        ];
+	}
+
+	if(window.location.hash) 
+		var currentSection = window.location.hash.substring(1);
+	else 
+		var currentSection = headerElements[0].textContent;
+
+    sections[currentSection].forEach(function(element) {
+        element.classList.toggle('current');
+    });
+
+	for(var i = 0; i < headerElements.length; i++) {
+		headerElements[i].addEventListener('click', function(event) {
+            if(this.textContent != currentSection) {
+                sections[currentSection].forEach(function(element) {
+                    element.classList.toggle('current');
+                });
+
+                sections[this.textContent].forEach(function(element) {
+                    element.classList.toggle('current');
+                });
+
+                currentSection = this.textContent;
+            }
+
+            window.scrollTo(0,0);
+		});
+	}
+
+    return sections;
+}
+
+window.showMenu = (function () {
+    var active = null;
+
+    function addFiller(popup, lim) {
+        var parent = popup.parentNode;
+
+        // add filler elements
+        for(var i = 0; i < 20 - lim; i++) {
+            var newNode = document.createElement("div");
+            newNode.classList.add("grid","filler");
+            parent.insertBefore(newNode, popup.nextElementSibling);
+        }
+
+        // Remove margin on real nodes
+        var counter = 0,
+            curr = popup;
+        while(counter < lim) {
+            curr = curr.nextElementSibling;
+            if(curr.classList.contains("grid")) {
+                console.log(counter)
+                console.log(curr);
+                curr.classList.remove("expand");
+                curr.classList.add("no-transition-margin");
+                counter++;
+            }
+        }
+
+    }
+
+    function removeFiller(popup, lim) {
+        var parent = popup.parentNode;
+
+        for(var i = 0; i < 20 - lim; i++) {
+            parent.removeChild(popup.nextElementSibling);
+        }
+
+        var oldRightNodes = Array(lim),
+            counter = 0,
+            curr = popup;
+        while(counter < lim) {
+            curr = curr.nextElementSibling;
+            if(curr.classList.contains("grid")) {
+                oldRightNodes[counter++] = curr;
+                curr.classList.add("shrink");
+            }
+        }
+
+        window.scrollX;
+        for(var i = 0; i < lim; i++) {
+            oldRightNodes[i].classList.remove("shrink");
+            oldRightNodes[i].classList.remove("no-transition-margin");
+        }
+    }
+
+    function expand(el) {
+        el.classList.add("active");
+        var popup = el.nextElementSibling;
+
+        var lim = 20 - Number(el.getElementsByTagName("SPAN")[0].textContent) % 20;
+        if (lim == 0) {
+            popup.classList.remove("hidden");    
+            return;
+        }
+
+        rightNodes = Array(lim);
+
+        var curr = popup;
+            index = 0;
+        var complete = 0;
+        while(index < lim) {
+            curr = curr.nextElementSibling;
+            if(!curr.classList.contains("grid"))
+                continue;
+                
+            curr.addEventListener("transitionend", function (e) {
+                complete ++;
+                if(complete == lim) {
+                    console.log("adding stuff");
+                    addFiller(popup, lim);
+                    popup.classList.remove("no-width");
+                    popup.classList.add("active");
+                }
+
+                e.target.removeEventListener(e.type, arguments.callee);
+            });
+                
+            console.log("operating on rightNodes E");
+            rightNodes[index++] = curr;
+        }
+
+        for(var i = 0; i < lim; i++)
+            rightNodes[i].classList.add("expand");
+    }
+
+    function hide(el) {
+        var popup = el.nextElementSibling;
+        var lim = 20 - Number(el.getElementsByTagName("span")[0].textContent) % 20;
+
+        popup.addEventListener("transitionend", function(e) {
+            removeFiller(popup, lim);
+            console.log("removing stuff");
+            popup.classList.add("no-width");
+            el.classList.remove("active");
+            e.target.removeEventListener(e.type, arguments.callee); 
+        });
+
+        popup.classList.remove("active");
+    }
+
+    function toggle(el) {
+        if(el.classList.contains("active")) {
+            hide(el);
+            active = null;
+        }
+        else {
+            if (active) {
+                console.log("Hiding old");
+                hide(active);
+            }
+
+            console.log("Expanding new");
+            expand(el);
+            active = el;
+        }
+    }
+
+    return toggle;
+})();

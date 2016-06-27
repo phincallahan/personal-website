@@ -1,4 +1,5 @@
 module.exports = function(grunt) {
+    grunt.option('stack', true);
     path = require('path');
 
     require('load-grunt-config')(grunt, {

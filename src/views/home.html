@@ -4,10 +4,9 @@
 	<title>Phin</title>
 	<link href='https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic|Hind:400,600' rel='stylesheet' type='text/css'>
 	<link href="css/home.css" rel="stylesheet">
-	<script src="js/bundle.js" type='text/javascript'></script>
-	<script src="http://d3js.org/d3.v3.min.js"  charset="utf-8"></script>  
   </head>
   <body>
+	<script src="js/bundle.js" type='text/javascript'></script>
 	<header class = "index-header">
 	  <ul/>
 		<li>about</li>
@@ -53,8 +52,23 @@
 	  </section>
 
 	  <section id = "project-euler">
-		<svg class = "solution-container">
-		</svg>
+		<div class = "solution-container">
+		{%- for solution  in euler -%}
+		<div class = "solution" >
+		  <div class = "solution-button" onclick="showMenu(this.parentNode);">
+			<span>{{ solution.number }}</span>
+		  </div>
+		  <div class = "solution-content">
+			<h2>{{ solution.title }}</h2>
+			{%- if solution.snippets -%}
+			{%- for snippet in solution.snippets -%}
+				{{ snippet }}
+			  {%- endfor -%}
+			{%- endif -%}
+		  </div>
+		</div>
+		{% endfor %}
+		</div>
 	  </section>
 	</div>
   </div>

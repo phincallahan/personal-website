@@ -28,6 +28,15 @@ app.get('/blog/*', function(req, res) {
 	res.sendFile(resources+postPath+'.html', options);
 });
 
+app.get('/euler/*', function(req, res) {
+    var options = {
+        headers: {
+            'Content-Type': 'text/html'
+        }
+    };
+    res.sendFile(resources+'euler/1'+'.html', options);
+});
+
 app.listen(app.get('port'), function() {
 	console.log("Web server listening on port " + app.get('port'));
 });

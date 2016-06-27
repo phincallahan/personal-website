@@ -1,62 +1,97 @@
 module.exports = function(grunt) {
-    marked = require('meta-marked');
-    swig = require('swig');
+    var marked = require('meta-marked');
+    marked.setOptions({
+        highlight: function (code) {
+            return require('highlight.js').highlightAuto(code).value;
+        }
+    });
+
+    var swig = require('swig');
     swig.setDefaults({ autoescape: false });
-   
+    
+    var cache = require(__dirname+'/cache.js')(grunt);
+
     grunt.registerTask('gen', 'Compiles static website', function() {
-        var locals = new Object();
-        locals.posts = mkposts();
-        grunt.file.write('dist/assets/euler.json', JSON.stringify(mkprojecteuler()));
-        
-        var index = swig.renderFile('src/views/home.html', locals);
+        var target = {
+            path : {
+                blog : "content/posts/",
+                euler : "content/project-euler/"
+            }
+        };
+
+        var functs = [getProblems, getCodeSnippets, filterUnsolved, getPosts];
+        for(var i = 0; i < functs.length; i++) {
+            target = functs[i](target);
+        }
+
+        var index = swig.renderFile('src/views/home.html', target);
         grunt.file.write('dist/index.html', index);
 	});
 
-    function mkprojecteuler() {
-        var info = grunt.file.readJSON('content/project-euler/info.json');
-        var meta = info['meta'];
-        var pattern = '[0-9]*';
+    function filterUnsolved(target) {
+        var solutions = [];
 
-        var paths = grunt.file.expand({cwd : 'content/project-euler'}, pattern);
-        var solutions = paths.map(function(p) {
-            var id = Number(p);
-            if(info.solved.indexOf(id)) {
-                info.solved.splice(info.solved.indexOf(id), 1);
+        target.euler.forEach(function(item) {
+            if (item.solved) {
+                solutions.push(item);
             }
-
-            var sol = {
-                number : p,
-                difficulty : meta[id]['difficulty'],
-                title : meta[id]['title']
-            };
-            return sol;
         });
-        
-        solutions = solutions.concat(info.solved.map(function(p) {
-            var id = Number(p);
-            var sol = {
-                number : p,
-                difficulty : meta[id]['difficulty'],
-                title : meta[id]['title']
-            };
-            return sol;
-        }));
+        target.euler = solutions;
 
-        return solutions;
+        return target;
     }
 
-    function mkposts() {
-        var meta = Array();
-        var blogtpl = swig.compileFile("src/views/blog.html");
+    function getCodeSnippets(target) {
+        var folder = grunt.file.expand({cwd: target.path.euler}, '[0-9]*');
+        for(var i = 0; i < folder.length; i++) {
+            var num = folder[i];
+            var problem = target.euler.get(num);
 
-        var posts = grunt.file.recurse('content/posts', function(path) {
-            var post = marked(grunt.file.read(path));
-            var path = 'dist/posts/'+p.meta.title+'.html';
-            grunt.file.write(path, blogtpl({ post : p }));
-            meta.append(post);
-        });
-        
-        return meta;
+            problem.snippets = [];
+            problem.solved = true;
+
+            var path = target.path.euler + num;
+            grunt.file.recurse(path, function (abspath, rootdir, subdir, filename) {
+                if(!filename.includes(".") || filename.startsWith("."))
+                    return;
+
+                grunt.log.writeln("processing: "+filename);
+                if(cache.has(abspath)) {
+                    grunt.log.writeln("\tretrieving cache");
+                    problem.snippets.push(cache.get(abspath));
+                }
+                else {
+                    grunt.log.writeln("\tproducing html");
+                    var snippet = "";
+                    snippet += "```"+filename.split(".")[1]+"\n";
+                    snippet += grunt.file.read(abspath, {encoding : 'utf-8'});
+                    snippet += "```\n";
+                    snippet = marked(snippet).html;
+
+                    grunt.log.writeln("\tcaching: "+filename);
+                    cache.put(abspath, snippet);
+                    problem.snippets.push(snippet);
+                }
+            });
+        }
+
+        return target;
+    }
+
+    function getProblems(target) {
+        var problems = grunt.file.readJSON(target.path.euler+'/info.json');
+
+        target.euler = new Map();
+        for(var i = 0; i < problems.length; i++) {
+            target.euler.set(problems[i].number, problems[i]);
+        }
+
+        return target;
+    }
+
+    function getPosts(target) {
+        target.posts = [];
+        return target;
     }
 };
 
