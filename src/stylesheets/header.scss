@@ -1,0 +1,25 @@
+header nav {
+    border: black 3px solid;
+    display: inline-block;
+    margin-bottom: 60px;
+
+	font-size: 24px;
+    font-weight: 300;
+
+    h1, h2, h3 {
+		line-height: 1em;
+        margin: 0;
+        padding: 1px 4px;
+        display: inline-block;
+
+        &:hover {
+            color: white;
+            background: black;
+        }
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+}
