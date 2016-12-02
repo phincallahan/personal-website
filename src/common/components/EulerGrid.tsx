@@ -11,7 +11,8 @@ import { EulerGridCell } from './EulerGridCell';
 declare let _store: Store;
 
 if(process.env && process.env.BROWSER) {
-    require('../../stylesheets/components/_euler.scss');
+    console.log('HEY I"M GOING TO GET THE CODE');
+    require('../../stylesheets/euler.scss');
 }
 
 interface GridProps {

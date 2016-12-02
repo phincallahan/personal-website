@@ -1,4 +1,5 @@
 import app from './app';
 
-console.log('listening on 8080');
-app.listen(3000);
+const port = 8000;
+console.log('listening on 3000');
+app.listen(8000);

@@ -54,8 +54,10 @@ gulp.task('client-watch', function() {
 
 gulp.task('build', function(done) {
     var env = process.env.NODE_ENV = 'production';
+    
     let clientBuild = new Promise((res,rej) => webpack(config.prod.client).run(onBuild(res, rej)))
     let serverBuild = new Promise((res,rej) => webpack(config.prod.server).run(onBuild(res, rej)));
+    
     Promise.all([clientBuild, serverBuild]).then(() => done()).catch(console.log);
 });
 

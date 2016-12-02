@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 if(process.env && process.env.BROWSER) {
-    require('../../stylesheets/components/_header.scss');
+    require('../../stylesheets/header.scss');
 }
 
 export const Header = (props) => (
