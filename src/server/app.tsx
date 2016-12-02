@@ -1,5 +1,3 @@
-// delete process.env.BROWSER;
-
 import * as Express from 'express';
 import * as React from 'react';
 import * as path from 'path';
@@ -64,7 +62,13 @@ function extractCSS(projectEuler: ProjectEulerModel) {
 	return css;
 }
 
-const eulerPath = '/Users/phin/Code/project-euler/';
+let eulerPath: string;
+if(process.env.NODE_ENV == 'development') {
+	eulerPath = '/Users/phin/Code/project-euler/';
+} else {
+	eulerPath = '/root/project-euler/';
+}
+
 const projectEuler = new ProjectEulerModel({path: eulerPath});
 
 const app = Express();

@@ -24,7 +24,7 @@ var base = {
                 loader: ExtractTextPlugin.extract('style', ['css', 'sass'], {
                     publicPath: 'assets'
                 })
-            }
+            },
         ],
     }
 }
@@ -41,10 +41,11 @@ var client = {
     plugins: [
         new webpack.DefinePlugin({
             "process.env": {
-                BROWSER: JSON.stringify(true)
+                BROWSER: JSON.stringify(true),
+                ENV: JSON.stringify('production')
             }
         }),
-        new ExtractTextPlugin("[name].css")
+        new ExtractTextPlugin("[name].css"),
     ],
 };
 
@@ -63,10 +64,10 @@ var server = {
     },
     target: 'node',
     plugins: [
-        new webpack.IgnorePlugin(/\.s?css$/),
         new webpack.DefinePlugin({
             "process.env": {
-                CLIENT_LOC: JSON.stringify(client.output.path)
+                CLIENT_LOC: JSON.stringify(client.output.path),
+                ENV: JSON.stringify('production'),
             }
         })
     ],
