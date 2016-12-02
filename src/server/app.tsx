@@ -64,9 +64,9 @@ function extractCSS(projectEuler: ProjectEulerModel) {
 
 let eulerPath: string;
 if(process.env.NODE_ENV == 'development') {
-	eulerPath = '/root/project-euler/';
-} else {
 	eulerPath = '/Users/phin/Code/project-euler/';
+} else {
+	eulerPath = '/root/project-euler/';
 }
 
 const projectEuler = new ProjectEulerModel({path: eulerPath});
