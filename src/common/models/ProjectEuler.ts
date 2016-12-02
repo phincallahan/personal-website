@@ -27,7 +27,7 @@ export class ProjectEulerModel {
 
     constructor(config: {path: string}) {
         this.config = config;
-        this.getProblems(config.path).then(problems => this.problems = problems);
+        this.getProblems(config.path).then(problems => this.problems = problems).catch(console.log);
     }
 
     static getProblemId(problemDir: string): number {
