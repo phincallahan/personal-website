@@ -1,5 +1,6 @@
 import app from './app';
+import { hostname } from 'os';
 
-const port = 8000;
+const port = hostname() === 'personal-website' ? 80 : 8000;
 console.log(`listening on ${port}`);
-app.listen(8000);
+app.listen(port);
