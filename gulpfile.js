@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var os = require('os');
 
 var gulp = require('gulp');
 var clean = require('gulp-clean')
@@ -34,7 +35,12 @@ gulp.task('clean', function(done) {
 
 gulp.task('euler', function(done) {
     const reg = `^problem([0-9]+)\.([a-zA-z]+)$`;
-    const eulerPath = '/Users/phin/Code/project-euler/';
+    if (os.hostname() === 'personal-website')  {
+        let eulerPath = '/root/project-euler/';
+    } else {
+        let eulerPath = '/Users/phin/Code/project-euler/';
+    }
+
     let matches = fs.readdirSync(eulerPath)
         .map(f => f.match(reg))
         .filter(f => !!f)
