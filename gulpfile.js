@@ -82,7 +82,7 @@ gulp.task('client-watch', function() {
         publicPath: config.dev.client.output.publicPath,
         hot: true,
         proxy: {
-            '**': 'http://localhost:8080'
+            '**': 'http://localhost:8000'
         }
     }).listen(3000, 'localhost', function (err, result) {
         if (err) {
