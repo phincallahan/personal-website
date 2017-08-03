@@ -4,9 +4,10 @@ import { EulerGrid } from './EulerGrid';
 import { WindowManager } from './WindowManager';
 
 export const Euler = () => (
-    <div>
-        <WindowManager/>
+    <section id="euler">
+        <h3>Euler</h3>
+         <WindowManager/> 
         <EulerGrid/>
-    </div>
+    </section>
 )
     

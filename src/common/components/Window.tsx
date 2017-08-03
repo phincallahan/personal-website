@@ -1,23 +1,26 @@
-import * as React from 'react'
+import * as React from 'react';
 import * as classNames from 'classnames';
 import { connect } from 'react-redux';
 import { Store } from '../reducers';
-import { BaseWindow } from '../reducers/windows';
+import { Window as WindowTypes } from '../reducers';
 
-interface WindowState {
-    x: number;
-    y: number;
+namespace Window {
+    export interface Props extends WindowTypes.Base {
+        isActive: boolean;
+        closeWindow: (key: string) => void;
+        focusWindow: (key: string) => void;
+        moveWindow: (key: string, x: number, y: number) => void;
+    }
+
+    export interface State {
+        x: number;
+        y: number;
+        tab?: number;
+    }
 }
 
-interface WindowProps extends BaseWindow {
-    isActive: boolean;
-    closeWindow: (key: string) => void;
-    focusWindow: (key: string) => void;
-    moveWindow: (key: string, x: number, y: number) => void;
-}
-
-export class Window extends React.Component<WindowProps, WindowState> {
-    constructor(props: WindowProps) {
+export class Window extends React.Component<Window.Props, Window.State> {
+    constructor(props: Window.Props) {
         super(props);
 
         this.state = {
@@ -35,10 +38,11 @@ export class Window extends React.Component<WindowProps, WindowState> {
         const y0 = this.state.y;
         const x1 = e1.screenX;
         const y1 = e1.screenY;
+
         let handler = (e2: MouseEvent) => {
             this.setState({
-                x: x0 + e2.screenX - x1,
-                y: y0 + e2.screenY - y1
+                x: Math.max(x0 + e2.screenX - x1, 0),
+                y: Math.max(y0 + e2.screenY - y1, 0)
             });
         }
         
@@ -74,6 +78,9 @@ export class Window extends React.Component<WindowProps, WindowState> {
                         X</button>
                 </div>
                 <div className = "body">
+                    <div className = "left-edge"> </div>
+                    <div className = "bottom-edge"> </div>
+                    <div className = "right-edge"> </div>
                     {this.props.children}
                 </div>
             </div>

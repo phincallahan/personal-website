@@ -14,7 +14,7 @@ interface EulerGridCellProps {
     }[];
 }
 
-export class EulerGridCell extends React.Component<EulerGridCellProps, void> {
+export class EulerGridCell extends React.Component<EulerGridCellProps, undefined> {
     constructor(props: EulerGridCellProps) {
         super(props);
     }

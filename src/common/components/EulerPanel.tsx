@@ -1,10 +1,16 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import * as euler from '../reducers/euler';
+import { Store } from '../reducers'
 
-export const EulerPanel = (props: euler.Problem) => (
-    <div className="euler-panel">
+namespace EulerPanel {
+    export interface Props {
+        solutions: Store["euler"]["solutions"][number]
+    }
+}
+
+export const EulerPanel = (props: EulerPanel.Props) => {
+    return <div className="euler-panel">
         { props.solutions.map((sol,i) => <pre key={i}>{sol.code}</pre>)}
     </div>
-)
+}

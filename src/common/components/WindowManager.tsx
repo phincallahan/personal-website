@@ -2,22 +2,21 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import * as window from '../reducers/windows'
-import * as euler from '../reducers/euler'
-
-import { Store } from '../reducers';
+import { Store, actions } from '../reducers';
 import { Window } from './Window';
 import { EulerPanel } from './EulerPanel';
 
-interface WindowManagerProps {
-    closeWindow: (key: string) => void;
-    focusWindow: (key: string) => void;
-    moveWindow: (key: string, x: number, y: number) => void;
-    problems: euler.Problem[];
-    windows: window.Window[];
+namespace WindowManager {
+    export interface Props {
+        closeWindow: (key: string) => void;
+        focusWindow: (key: string) => void;
+        moveWindow: (key: string, x: number, y: number) => void;
+        solutions: Store["euler"]["solutions"];
+        windows: Store["windows"];
+    }
 }
 
-class WM extends React.Component<WindowManagerProps, void> {
+class WM extends React.Component<WindowManager.Props, undefined> {
     render() {
         let windowFuncs = {
             closeWindow: this.props.closeWindow,
@@ -29,8 +28,8 @@ class WM extends React.Component<WindowManagerProps, void> {
             let contents: JSX.Element;
             switch(w.kind) {
                 case "Euler":
-                    let problem = this.props.problems[w.problemID];
-                    contents = <EulerPanel {...problem}/>
+                    let s = this.props.solutions[w.problemID]
+                    contents = <EulerPanel solutions={s}/>
                     break;
                 case "Directory":
                     contents = <span>Directory</span>
@@ -57,16 +56,16 @@ class WM extends React.Component<WindowManagerProps, void> {
 function mapStateToProps(state: Store): any {
     return {
         windows: state.windows,
-        problems: state.euler.problems
+        solutions: state.euler.solutions
     }
 }
 
 function mapDispatchToProps(dispatch: Dispatch<Store>) {
     return {
-        closeWindow: (key: string) => dispatch(window.actions.remove(key)),
-        focusWindow: (key: string) => dispatch(window.actions.focus(key)),
+        closeWindow: (key: string) => dispatch(actions.window.remove(key)),
+        focusWindow: (key: string) => dispatch(actions.window.focus(key)),
         moveWindow:  (key: string, x: number, y: number) => 
-            dispatch(window.actions.move({key, x, y}))
+            dispatch(actions.window.move({key, x, y}))
     }
 }
 

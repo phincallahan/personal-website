@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-if(process.env && process.env.BROWSER) {
+if(process.env && process.env['BROWSER']) {
     require('../../stylesheets/header.scss');
 }
 

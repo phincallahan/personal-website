@@ -1,12 +1,14 @@
 header nav {
-    border: black 3px solid;
-    display: inline-block;
     margin-bottom: 60px;
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: flex-end;
+    font-family: monospace;
 
-	font-size: 24px;
-    font-weight: 300;
+	font-size: 16px;
 
-    h1, h2, h3 {
+    .nav-item {
 		line-height: 1em;
         margin: 0;
         padding: 1px 4px;

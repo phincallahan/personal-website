@@ -1,0 +1,39 @@
+$sprite-size: 20px;
+
+
+.pacman-container {
+    position: relative;
+    margin: auto;
+
+    > input {
+        position: relative;
+        border: none;
+        outline: none;
+        top: 1px;
+        width: 0px;
+        height: 0px;
+    }
+
+    > canvas {
+        border: 3px solid black;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+
+.sprite {
+    width: $sprite-size;
+    height: $sprite-size;
+    position: absolute;
+
+    &.pacman {
+        background: gold;
+        border: $sprite-size;
+        border-radius: $sprite-size;
+    }
+
+    &.wall {
+        background: blue;
+    }
+}

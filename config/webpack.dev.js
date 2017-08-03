@@ -1,29 +1,32 @@
 var webpack = require('webpack');
 var path = require('path');
 var fs = require('fs');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
+process.env.NODE_ENV = 'development';
 
 var base = {
     devtool: 'source-map',
-    debug: true,
     resolve: {
-        extensions: ['', '.ts', '.tsx', '.web.js', '.js', '.jsx', '.webpack.js', '.scss']
+        extensions: ['.ts', '.tsx', '.web.js', '.js', '.jsx', '.webpack.js', '.scss']
     },
 
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.tsx?$/,
-                loader: 'ts-loader'
+                use: 'ts-loader'
             },
             {
                 test: /\.scss$/,
-                loaders: ['style', 'css?sourceMap', 'sass?sourceMap']
+                use: ['style-loader', 'css-loader?sourceMap', 'sass-loader?sourceMap']
+            },
+            { 
+                enforce: 'pre',
+                test: /\.js$/, 
+                use: "source-map-loader" 
             }
-        ],
-        preLoaders: [
-            { test: /\.js$/, loader: "source-map-loader" }
-        ] 
+        ]
     }
 }
 
@@ -45,7 +48,10 @@ var client = {
             "process.env": {
                 BROWSER: JSON.stringify(true)
             }
-        })
+        }),
+        new CopyWebpackPlugin([
+            {from: 'node_modules/shoelace-css/dist/shoelace.css'}
+        ])
     ],
 };
 
@@ -66,14 +72,15 @@ var server = {
     target: 'node',
     plugins: [
         new webpack.IgnorePlugin(/\.s?css$/),
-        new webpack.BannerPlugin('require("source-map-support").install();',
-            { raw: true, entryOnly: false }),
+        // new webpack.BannerPlugin('require("source-map-support").install();',
+        //     { raw: true, entryOnly: false }),
         new webpack.HotModuleReplacementPlugin({ quiet: true }),
         new webpack.DefinePlugin({
             "process.env": {
-                CLIENT_LOC: JSON.stringify(client.output.path)
+                CLIENT_LOC: JSON.stringify(client.output.path),
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
             }
-        })
+        }),
     ],
     node: {
         __dirname: true,

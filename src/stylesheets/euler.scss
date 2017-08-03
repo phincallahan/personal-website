@@ -1,37 +1,48 @@
+$euler-cell-border: 1px;
+$euler-cell-margin: 1px;
+$euler-cell-size: 20px;
+
 .euler-grid {
-    font-size: .75rem;
-    top: 30px;
     margin: auto;
-    position: relative;
-    height: 200px;
-    transition: transform .5s ease-out
-}
+    display: flex;
+    flex-wrap: wrap;
+    width: 20 * (2 * $euler-cell-border + 2 * $euler-cell-margin + $euler-cell-size);
 
-.euler-grid-cell {
-    position: absolute;
-    border-color: black;
-    border-style: solid;
-    transition: transform .5s ease-out;
-    background: none;
-    text-align: center;
-
-    &:hover, &.active {
-        z-index: 3;
-        background-color: black;
-        border-color: black;
-        color: white;
-        cursor: pointer;
+    div {
+        box-sizing: content-box;
+        height: $euler-cell-size;
+        width: $euler-cell-size;
+        margin: $euler-cell-border + $euler-cell-margin;
     }
 
-    &.active .euler-code {
-        display: block;
+    .euler-grid-cell {
+        font-size: 10px;
+        line-height: $euler-cell-size;
+
+        border: $euler-cell-border solid black;
+        margin: $euler-cell-margin;
+        transition: transform .5s ease-out;
+        background: none;
+        text-align: center;
+
+        &:hover, &.active {
+            z-index: 3;
+            background-color: black;
+            color: white;
+            cursor: pointer;
+        }
+
+        &.active .euler-code {
+            display: block;
+        }
     }
 }
 
 .window-manager {
-    position: relative;
+    position: absolute;
+    top: 0px;
+    left: 0px;
 }
-
 
 .code-window {
     font-size: .75rem;
@@ -92,6 +103,10 @@
     }
 
     & .close-button {
+        font-size: inherit;
+        height: auto;
+        font-family: inherit;
+        color: black;
         padding: .1em .4em;
         font-weight: bold;
         background: lightgrey;
@@ -110,5 +125,30 @@
             margin-bottom: 1px;
             outline: none;
         }
+    }
+
+    & .left-edge {
+        position: absolute;
+        width: 4px;
+        left: 0px;
+        top: 0px;
+        bottom: 0px;
+    }
+
+
+    & .right-edge {
+        position: absolute;
+        width: 4px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+    }
+
+    & .bottom-edge {
+        position: absolute;
+        height: 4px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
     }
 }

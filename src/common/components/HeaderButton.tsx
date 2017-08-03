@@ -1,12 +1,10 @@
 import * as React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 interface HeaderButtonProps {
     link: string;
 }
 
 export const HeaderButton = (props: HeaderButtonProps) => (
-    <h1>
-        <Link to={`${props.link}`}>{props.link}</Link>
-    </h1>
+    <h1 className="nav-item"> <Link to={'/' + props.link}>{props.link}</Link></h1>
 )

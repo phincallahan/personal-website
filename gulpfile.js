@@ -2,6 +2,9 @@ var fs = require('fs');
 var path = require('path');
 
 var gulp = require('gulp');
+var clean = require('gulp-clean')
+var sass = require('gulp-sass');
+var concat = require('gulp-concat');
 var nodemon = require('nodemon');
 
 require('es6-promise').polyfill();
@@ -24,6 +27,36 @@ function onBuild(res, rej) {
         }
     }
 }
+
+gulp.task('clean', function(done) {
+    return gulp.src('build/*', {read: false}).pipe(clean());
+});
+
+gulp.task('euler', function(done) {
+    const reg = `^problem([0-9]+)\.([a-zA-z]+)$`;
+    const eulerPath = '/Users/phin/Code/project-euler/';
+    let matches = fs.readdirSync(eulerPath)
+        .map(f => f.match(reg))
+        .filter(f => !!f)
+
+    let solutions = {};
+    matches.forEach(m => {
+        let solution = { 
+            ext: m[2],
+            code: fs.readFileSync(eulerPath + m.input).toString() 
+        }
+
+        if (solutions[m[1]]) {
+            solutions[m[1]].push(solution)
+        } else {
+            solutions[m[1]] = [solution]
+        }
+    });
+
+    const eulerJSONPath = path.join(process.cwd(), '/build/euler.json');
+    fs.writeFileSync(eulerJSONPath, JSON.stringify(solutions));
+    done();
+})
 
 gulp.task('server-watch', function(done) {
     var firedDone = false;
@@ -52,7 +85,7 @@ gulp.task('client-watch', function() {
     });
 }); 
 
-gulp.task('build', function(done) {
+gulp.task('build', ['euler'], function(done) {
     var env = process.env.NODE_ENV = 'production';
     
     let clientBuild = new Promise((res,rej) => webpack(config.prod.client).run(onBuild(res, rej)))
@@ -61,7 +94,11 @@ gulp.task('build', function(done) {
     Promise.all([clientBuild, serverBuild]).then(() => done()).catch(console.log);
 });
 
-gulp.task('dev', ['client-watch', 'server-watch'], function() {
+gulp.task('deploy', ['build'], function(done) {
+    var cred = JSON.parse(fs.readFileSync('.credentials').toString());
+});
+
+gulp.task('dev', ['euler', 'client-watch', 'server-watch'], function() {
     nodemon({
         execMap: {
             js: 'node'

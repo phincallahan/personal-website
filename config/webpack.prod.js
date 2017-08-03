@@ -2,27 +2,25 @@ var webpack = require('webpack');
 var path = require('path');
 var fs = require('fs');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var base = {
-    debug: true,
     resolve: {
-        extensions: ['', '.ts', '.tsx', '.web.js', '.js', '.jsx', '.webpack.js', '.scss']
+        extensions: ['.ts', '.tsx', '.web.js', '.js', '.jsx', '.webpack.js', '.scss']
     },
 
     module: {
         loaders: [
             {
                 test: /\.tsx?$/,
-                loader: 'ts-loader'
+                use: 'ts-loader'
             },
-            // {
-            //     test: /\.scss$/,
-            //     loaders: ['style', 'css', 'sass']
-            // },
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('style', ['css', 'sass'], {
-                    publicPath: 'assets'
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: 'css-loader!sass-loader',
+                    publicPath: "assets"
                 })
             },
         ],
@@ -46,6 +44,9 @@ var client = {
             }
         }),
         new ExtractTextPlugin("[name].css"),
+        new CopyWebpackPlugin([
+            {from: 'node_modules/shoelace-css/dist/shoelace.css'}
+        ])
     ],
 };
 

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Provider } from 'react-redux';
 import { render } from 'react-dom';
-import { Router, browserHistory } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 
 import { configureStore, Store } from '../common/reducers';
-import routes from  '../common/routes'
+
+import App from '../common/components/App';
 
 type MyAction = Action<"HEY", string, number>;
 
@@ -21,13 +22,13 @@ for(let key in window.$REDUX_STATE) {
     initState[key] = window.$REDUX_STATE[key];
 }
 
-console.log(initState);
-
 const store = configureStore(initState);
-
+ 
 render(
   <Provider store={store}>
-      <Router children={routes} history={browserHistory} />
-  </Provider>,
+      <BrowserRouter>
+        <App/>
+      </BrowserRouter>
+  </Provider>, 
   document.getElementById('react-view')
 );
