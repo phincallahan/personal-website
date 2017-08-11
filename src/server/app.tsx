@@ -12,7 +12,7 @@ import App from '../common/components/App';
 
 import { Euler } from '../common/models/ProjectEuler'
 
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync } from 'fs';
 
 function renderFullPage(initialState: Store, html: string) {
     return `
@@ -22,6 +22,7 @@ function renderFullPage(initialState: Store, html: string) {
 		<title>Phineas' React Blog</title>
 		<link rel="stylesheet" href="/assets/shoelace.css">
 		<link rel='stylesheet' type='text/css' href='/assets/main.css'/>
+		<meta name="google-site-verification" content="YJXWmGQs6l_DqAiQWqusnegRD-l2HrPl7wG4HPl7BNA" />
 		<style>
 			main {
 				max-width: 45rem;
@@ -42,7 +43,7 @@ function renderFullPage(initialState: Store, html: string) {
 }
 
 const app = Express();
-const eulerSolutions = JSON.parse(readFileSync('euler.json').toString());
+const eulerSolutions = JSON.parse(readFileSync('build/euler.json').toString());
 
 app.use('/assets', Express.static(process.env['CLIENT_LOC']));
 app.use((req, res) => {
