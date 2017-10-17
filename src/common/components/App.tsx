@@ -7,6 +7,9 @@ import { About } from './About';
 import { Euler } from './Euler';
 import { PacmanGame as Pacman } from './Pacman';
 
+
+const Main = () => (<div> <About/> <Euler/> </div>)
+
 class App extends React.Component<undefined, undefined> {
     constructor() {
         super();
@@ -15,13 +18,8 @@ class App extends React.Component<undefined, undefined> {
     render() {
         return (
             <main>
-                {/* <Header>
-                    <HeaderButton link="about"/>
-                    <HeaderButton link="blog"/>
-                    <HeaderButton link="euler"/> 
-                </Header>    */}
-                <About/>
-                <Euler/>
+                <Route exact path="/" component={Main}/>
+                <Route path="/pacman" component={Pacman}/>
             </main>
         )
     }

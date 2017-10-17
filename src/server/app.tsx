@@ -22,7 +22,6 @@ function renderFullPage(initialState: Store, html: string) {
 		<title>Phineas' React Blog</title>
 		<link rel="stylesheet" href="/assets/shoelace.css">
 		<link rel='stylesheet' type='text/css' href='/assets/main.css'/>
-		<meta name="google-site-verification" content="YJXWmGQs6l_DqAiQWqusnegRD-l2HrPl7wG4HPl7BNA" />
 		<style>
 			main {
 				max-width: 45rem;

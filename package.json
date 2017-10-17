@@ -24,7 +24,8 @@
     "redux-thunk": "^2.2.0",
     "redux-typescript-actions": "^1.1.0",
     "reselect": "^3.0.1",
-    "typescript": "^2.4.2"
+    "typescript": "^2.4.2",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.8",
