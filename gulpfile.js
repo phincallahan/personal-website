@@ -3,12 +3,12 @@ var path = require('path');
 var os = require('os');
 
 var gulp = require('gulp');
-var clean = require('gulp-clean')
 var sass = require('gulp-sass');
 var concat = require('gulp-concat');
 var nodemon = require('nodemon');
 
 var env  = process.env.NODE_ENV || 'development';
+
 var webpack = require('webpack');
 var config = {
     dev: require('./config/webpack.dev.js'),
@@ -26,10 +26,6 @@ function onBuild(res, rej) {
         }
     }
 }
-
-gulp.task('clean', function(done) {
-    return gulp.src('build/*', {read: false}).pipe(clean());
-});
 
 gulp.task('euler', function(done) {
     const reg = `^problem([0-9]+)\.([a-zA-z]+)$`;
