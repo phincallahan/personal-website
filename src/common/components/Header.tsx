@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-if(process.env && process.env['BROWSER']) {
+if(WEBPACK_IS_CLIENT) {
+    console.log(WEBPACK_IS_CLIENT);
     require('../../stylesheets/header.scss');
 }
 

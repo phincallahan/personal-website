@@ -8,8 +8,6 @@ var sass = require('gulp-sass');
 var concat = require('gulp-concat');
 var nodemon = require('nodemon');
 
-require('es6-promise').polyfill();
-
 var env  = process.env.NODE_ENV || 'development';
 var webpack = require('webpack');
 var config = {
@@ -100,10 +98,6 @@ gulp.task('build', ['euler'], function(done) {
     let serverBuild = new Promise((res,rej) => webpack(config.prod.server).run(onBuild(res, rej)));
     
     Promise.all([clientBuild, serverBuild]).then(() => done()).catch(console.log);
-});
-
-gulp.task('deploy', ['build'], function(done) {
-    var cred = JSON.parse(fs.readFileSync('.credentials').toString());
 });
 
 gulp.task('dev', ['euler', 'client-watch', 'server-watch'], function() {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-if(process.env && process.env['BROWSER'] && process.env['ENV'] !== 'production') {
+if (WEBPACK_IS_CLIENT) {
     require('../../stylesheets/pacman.scss');
 }
 
@@ -344,7 +344,7 @@ export class PacmanGame extends React.Component<undefined, undefined> {
     }
 
     public componentDidMount() {
-        if(process.env && !process.env['BROWSER']) {
+        if(process.env && !WEBPACK_IS_CLIENT) {
             return;
         }
 

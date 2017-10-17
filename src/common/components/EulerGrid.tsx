@@ -7,7 +7,7 @@ import { EulerGridCell } from './EulerGridCell';
 
 declare let _store: Store;
 
-if(process.env && process.env['BROWSER']) {
+if (WEBPACK_IS_CLIENT) {
     require('../../stylesheets/euler.scss');
 }
 

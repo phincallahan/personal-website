@@ -44,7 +44,7 @@ function renderFullPage(initialState: Store, html: string) {
 const app = Express();
 const eulerSolutions = JSON.parse(readFileSync('build/euler.json').toString());
 
-app.use('/assets', Express.static(process.env['CLIENT_LOC']));
+app.use('/assets', Express.static(path.join(process.cwd(), '/build/assets')));
 app.use((req, res) => {
 	var location = req.url
 

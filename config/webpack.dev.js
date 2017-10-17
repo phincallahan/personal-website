@@ -45,9 +45,7 @@ var client = {
     plugins: [
         new webpack.HotModuleReplacementPlugin({quiet: true}),
         new webpack.DefinePlugin({
-            "process.env": {
-                BROWSER: JSON.stringify(true)
-            }
+            "WEBPACK_IS_CLIENT": JSON.stringify(true)
         }),
         new CopyWebpackPlugin([
             {from: 'node_modules/shoelace-css/dist/shoelace.css'}
@@ -72,14 +70,10 @@ var server = {
     target: 'node',
     plugins: [
         new webpack.IgnorePlugin(/\.s?css$/),
-        // new webpack.BannerPlugin('require("source-map-support").install();',
-        //     { raw: true, entryOnly: false }),
         new webpack.HotModuleReplacementPlugin({ quiet: true }),
         new webpack.DefinePlugin({
-            "process.env": {
-                CLIENT_LOC: JSON.stringify(client.output.path),
-                NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
-            }
+            "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || 'development'),
+            "WEBPACK_IS_CLIENT": JSON.stringify(false)
         }),
     ],
     node: {
