@@ -5,10 +5,7 @@
     "stop": "pm2 stop ./config/pm2.config.js",
     "restart": "pm2 restart ./config/pm2.config.js"
   },
-  "config": {
-    "port": "8000"
-  },
-  "name": "foo",
+  "name": "personal-website",
   "version": "1.0.0",
   "description": "The code for my personal website",
   "repository": {
