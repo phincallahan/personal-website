@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var os = require('os');
+var exec = require('child_process').exec;
 
 var gulp = require('gulp');
 var sass = require('gulp-sass');
@@ -27,14 +28,27 @@ function onBuild(res, rej) {
     }
 }
 
-gulp.task('euler', function(done) {
-    const reg = `^problem([0-9]+)\.([a-zA-z]+)$`;
+gulp.task('pull-or-clone-euler', function(done) {
+    const githubURL = 'https://github.com/phincallahan/project-euler';
+    const git = !fs.existsSync('../project-euler/.git')
+        ? `cd .. && git clone ${githubURL}`
+        : `cd .. && git pull`
 
-    let eulerPath = ''
-    if (os.hostname() === 'personal-website')  {
-        eulerPath = '/root/project-euler/';
-    } else {
-        eulerPath = '/Users/phin/Code/project-euler/';
+    exec(git, (err, stdout, stderr)  => {
+        if (err) {
+            console.log(stderr);
+        } 
+
+        done();
+    });
+})
+
+gulp.task('euler', ['pull-or-clone-euler'], function(done) {
+    const reg = `^problem([0-9]+)\.([a-zA-z]+)$`;
+    const eulerJSONPath = path.join(process.cwd(), '/build/euler.json');
+
+    if (!fs.existsSync('build')) {
+        fs.mkdirSync('build');
     }
 
     let matches = fs.readdirSync(eulerPath)
@@ -55,7 +69,6 @@ gulp.task('euler', function(done) {
         }
     });
 
-    const eulerJSONPath = path.join(process.cwd(), '/build/euler.json');
     fs.writeFileSync(eulerJSONPath, JSON.stringify(solutions));
     done();
 })
@@ -89,7 +102,7 @@ gulp.task('client-watch', function() {
 
 gulp.task('build', ['euler'], function(done) {
     var env = process.env.NODE_ENV = 'production';
-    
+
     let clientBuild = new Promise((res,rej) => webpack(config.prod.client).run(onBuild(res, rej)))
     let serverBuild = new Promise((res,rej) => webpack(config.prod.server).run(onBuild(res, rej)));
     
