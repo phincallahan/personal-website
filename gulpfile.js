@@ -51,7 +51,7 @@ gulp.task('euler', ['pull-or-clone-euler'], function(done) {
         fs.mkdirSync('build');
     }
 
-    let matches = fs.readdirSync(eulerPath)
+    let matches = fs.readdirSync('../project-euler/')
         .map(f => f.match(reg))
         .filter(f => !!f)
 
@@ -59,7 +59,7 @@ gulp.task('euler', ['pull-or-clone-euler'], function(done) {
     matches.forEach(m => {
         let solution = { 
             ext: m[2],
-            code: fs.readFileSync(eulerPath + m.input).toString() 
+            code: fs.readFileSync('../project-euler/' + m.input).toString() 
         }
 
         if (solutions[m[1]]) {
