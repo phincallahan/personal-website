@@ -32,7 +32,7 @@ gulp.task('pull-or-clone-euler', function(done) {
     const githubURL = 'https://github.com/phincallahan/project-euler';
     const git = !fs.existsSync('../project-euler/.git')
         ? `cd .. && git clone ${githubURL}`
-        : `cd .. && git pull`
+        : `cd ../project-euler && git stash && git pull`
 
     exec(git, (err, stdout, stderr)  => {
         if (err) {
@@ -44,14 +44,14 @@ gulp.task('pull-or-clone-euler', function(done) {
 })
 
 gulp.task('euler', ['pull-or-clone-euler'], function(done) {
-    const reg = `^problem([0-9]+)\.([a-zA-z]+)$`;
+    const reg = `problem([0-9]+)\.([a-zA-z]+)$`;
     const eulerJSONPath = path.join(process.cwd(), '/build/euler.json');
 
     if (!fs.existsSync('build')) {
         fs.mkdirSync('build');
     }
 
-    let matches = fs.readdirSync('../project-euler/')
+    let matches = require('glob').sync('../project-euler/**/problem*.*')
         .map(f => f.match(reg))
         .filter(f => !!f)
 
@@ -59,7 +59,7 @@ gulp.task('euler', ['pull-or-clone-euler'], function(done) {
     matches.forEach(m => {
         let solution = { 
             ext: m[2],
-            code: fs.readFileSync('../project-euler/' + m.input).toString() 
+            code: fs.readFileSync(m.input).toString() 
         }
 
         if (solutions[m[1]]) {
