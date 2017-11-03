@@ -1,9 +1,7 @@
 {
   "scripts": {
     "postinstall": "gulp build",
-    "start": "node build/server.js",
-    "stop": "pm2 stop ./config/pm2.config.js",
-    "restart": "pm2 restart ./config/pm2.config.js",
+    "start": "echo 'nothing to start! its a static website'",
     "deploy": "ssh root@phineas.me 'bash deploy.sh personal-website'",
     "build": "gulp build"
   },
