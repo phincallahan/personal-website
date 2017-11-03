@@ -3,3 +3,5 @@ declare interface Action<T extends string, P, M> {
     payload: P;
     meta: M;
 }
+
+declare var WEBPACK_IS_CLIENT: boolean;

@@ -1,0 +1,19 @@
+@import 'variables';
+@import 'euler';
+
+@mixin screen-sizing($font-size) {
+    html { font-size: $font-size; } 
+    main { 
+        width: 33 * $font-size; 
+        margin: auto;
+        margin-top: .75 * $font-size;
+    }
+}
+
+@media all { @include screen-sizing(22px) }
+
+@each $screen-width, $font-size in $font-sizes {
+    @media all and (max-width: $screen-width) {
+        @include screen-sizing($font-size);
+    }
+}

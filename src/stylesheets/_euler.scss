@@ -1,26 +1,55 @@
-$euler-cell-border: 1px;
-$euler-cell-margin: 1px;
-$euler-cell-size: 20px;
+@import 'variables';
+
+@mixin euler-grid-sizing($font-size, $width) {
+    $width: 33 * $font-size;
+    $font-size: .6 * $font-size;
+    $euler-cell-border: 1px;
+    $euler-cell-margin: 2px;
+    $euler-cell-width: 2 * $font-size;
+    $euler-cell-total: $euler-cell-width + 2 * ($euler-cell-border + $euler-cell-margin);
+
+    $cells: $width / $euler-cell-total;
+    @if $cells < 10 { $cells: 5; }
+    @else if $cells < 20 { $cells: 10; }
+    @else { $cells: 20; }
+
+    width: $cells * $euler-cell-total;
+    font-size: $font-size;
+
+    div {
+        box-sizing: content-box;
+        height: $euler-cell-width;
+        width: $euler-cell-width;
+        margin: $euler-cell-border + $euler-cell-margin;
+    }
+
+    .euler-grid-cell {
+        line-height: $euler-cell-width;
+        border: $euler-cell-border solid black;
+        margin: $euler-cell-margin;
+    }
+
+}
+
+@media all {
+    .euler-grid { @include euler-grid-sizing(20px, 1000px) }
+}
+
+@each $screen-width, $font-size in $font-sizes {
+    @media all and (max-width: $screen-width) {
+        .euler-grid {
+            @include euler-grid-sizing(($font-size * 5)/6, $screen-width)
+        }
+    }
+}
 
 .euler-grid {
     margin: auto;
     display: flex;
     flex-wrap: wrap;
-    width: 20 * (2 * $euler-cell-border + 2 * $euler-cell-margin + $euler-cell-size);
 
-    div {
-        box-sizing: content-box;
-        height: $euler-cell-size;
-        width: $euler-cell-size;
-        margin: $euler-cell-border + $euler-cell-margin;
-    }
 
     .euler-grid-cell {
-        font-size: 10px;
-        line-height: $euler-cell-size;
-
-        border: $euler-cell-border solid black;
-        margin: $euler-cell-margin;
         transition: transform .5s ease-out;
         background: none;
         text-align: center;

@@ -1,124 +1,68 @@
-var fs = require('fs');
-var path = require('path');
-var os = require('os');
-var exec = require('child_process').exec;
+require('dotenv').config()
 
 var gulp = require('gulp');
+
+gulp.task('html', function() {
+    gulp.src('src/*.html').pipe(gulp.dest(process.env.NGINX_STATIC));
+});
+
 var sass = require('gulp-sass');
-var concat = require('gulp-concat');
-var nodemon = require('nodemon');
 
-var env  = process.env.NODE_ENV || 'development';
 
-var webpack = require('webpack');
-var config = {
-    dev: require('./config/webpack.dev.js'),
-    prod: require('./config/webpack.prod.js')
-}
-
-var WebpackDevServer = require('webpack-dev-server');
-
-function onBuild(res, rej) {
-    return function (err, stats) {
-        if (err) {
-            rej(err);
-        } else if (res) {
-            res(stats);
-        }
-    }
-}
-
-gulp.task('pull-or-clone-euler', function(done) {
-    const githubURL = 'https://github.com/phincallahan/project-euler';
-    const git = !fs.existsSync('../project-euler/.git')
-        ? `cd .. && git clone ${githubURL}`
-        : `cd ../project-euler && git stash && git pull`
-
-    exec(git, (err, stdout, stderr)  => {
-        if (err) {
-            console.log(stderr);
-        } 
-
-        done();
-    });
-})
-
-gulp.task('euler', ['pull-or-clone-euler'], function(done) {
-    const reg = `problem([0-9]+)\.([a-zA-z]+)$`;
-    const eulerJSONPath = path.join(process.cwd(), '/build/euler.json');
-
-    if (!fs.existsSync('build')) {
-        fs.mkdirSync('build');
-    }
-
-    let matches = require('glob').sync('../project-euler/**/problem*.*')
-        .map(f => f.match(reg))
-        .filter(f => !!f)
-
-    let solutions = {};
-    matches.forEach(m => {
-        let solution = { 
-            ext: m[2],
-            code: fs.readFileSync(m.input).toString() 
-        }
-
-        if (solutions[m[1]]) {
-            solutions[m[1]].push(solution)
-        } else {
-            solutions[m[1]] = [solution]
-        }
-    });
-
-    fs.writeFileSync(eulerJSONPath, JSON.stringify(solutions));
-    done();
-})
-
-gulp.task('server-watch', function(done) {
-    var firedDone = false;
-    webpack(config.dev.server).watch(100, function (err, stats) {
-        if (!firedDone) {
-            firedDone = true;
-            done();
-        }
-        nodemon.restart();
-    });
-})
-
-gulp.task('client-watch', function() {
-    new WebpackDevServer(webpack(config.dev.client), {
-        publicPath: config.dev.client.output.publicPath,
-        hot: true,
-        proxy: {
-            '**': 'http://localhost:8000'
-        }
-    }).listen(3000, 'localhost', function (err, result) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('webpack dev server listening at localhost:3000');
-        }
-    });
-}); 
-
-gulp.task('build', ['euler'], function(done) {
-    var env = process.env.NODE_ENV = 'production';
-
-    let clientBuild = new Promise((res,rej) => webpack(config.prod.client).run(onBuild(res, rej)))
-    let serverBuild = new Promise((res,rej) => webpack(config.prod.server).run(onBuild(res, rej)));
-    
-    Promise.all([clientBuild, serverBuild]).then(() => done()).catch(console.log);
+gulp.task('sass', function() {
+    gulp.src('src/stylesheets/*.scss')
+        .pipe(sass.sync().on('error', sass.logError))
+        .pipe(gulp.dest(process.env.NGINX_STATIC + '/css'));
 });
 
-gulp.task('dev', ['euler', 'client-watch', 'server-watch'], function() {
-    nodemon({
-        execMap: {
-            js: 'node'
-        },
-        script: path.join(__dirname, 'build/server'),
-        ignore: ['*'],
-        watch: ['foo/'],
-        ext: 'noop'
-    }).on('restart', function () {
-        console.log('Patched!');
-    });
+gulp.task('sass:watch', function () {
+    gulp.watch('src/stylesheets/*.scss', ['sass']);
 });
+
+gulp.task('css', ['sass'], function() {
+    shoelace = 'node_modules/shoelace-css/source/css/*.css'
+    gulp.src(shoelace).pipe(gulp.dest(process.env.NGINX_STATIC + '/css'))
+});
+
+var merge = require('merge2');
+var through = require('through2');
+var Vinyl = require('vinyl');
+
+gulp.task('euler.json', function() {
+    const euler = {}
+
+    merge(gulp.src(process.env.EULER_PATH + '/!(assets)*/problem*.*'))
+        .pipe(through.obj(
+                (s, e, cb) => {
+                    code = s.contents.toString();
+                    [prob, ext] = s.history[0].match(/.*?problem(.*)\.(.*)/).slice(1, 3);
+                    euler[prob] = euler[prob] 
+                        ? [...euler[prob], { ext, code }] 
+                        : [{ ext, code }];
+                    cb(); 
+                },
+                cb => {
+                   v = new Vinyl({
+                       path: 'euler.json',
+                       contents: new Buffer(JSON.stringify(euler))
+                    });
+                   cb(null, v);
+               }
+        )).pipe(gulp.dest(process.env.NGINX_STATIC + '/assets'))
+});
+
+var browserify = require("browserify");
+var source = require('vinyl-source-stream');
+var tsify = require("tsify");
+
+gulp.task('ts', function() {
+    return browserify()
+        .add('src/client.tsx')
+        .plugin(tsify)
+        .bundle()
+        .pipe(source('client.js'))
+        .pipe(gulp.dest(process.env.NGINX_STATIC + '/js'));
+});
+
+gulp.task('build', ['css', 'euler.json', 'ts', 'html']);
+gulp.task('dev', ['euler.json', 'sass:watch', 'html', 'ts']);
