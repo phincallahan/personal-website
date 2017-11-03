@@ -4,7 +4,8 @@
     "start": "node build/server.js",
     "stop": "pm2 stop ./config/pm2.config.js",
     "restart": "pm2 restart ./config/pm2.config.js",
-    "deploy": "ssh root@phineas.me 'bash deploy.sh personal-website'"
+    "deploy": "ssh root@phineas.me 'bash deploy.sh personal-website'",
+    "build": "gulp build"
   },
   "name": "personal-website",
   "version": "1.0.0",
@@ -28,6 +29,8 @@
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
+    "@types/react": "^16.0.19",
+    "@types/react-dom": "^16.0.2",
     "browserify": "^14.5.0",
     "del": "^3.0.0",
     "gulp": "^3.9.1",
