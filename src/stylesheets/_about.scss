@@ -4,7 +4,8 @@
 }
 
 .links {
-    padding: 0;
+    display: inline;
+    padding-left: .75em;
     li {
         display: inline;
         &::after {
