@@ -30,17 +30,19 @@ export const About = (props) => (
             to <a href={spotifyDiscoLink}>disco</a>.
         </p>
 
-        <p>
-            links:  
-            <ul className="links">
-                {
-                    links.map(({ name, link }) => (
-                        <li key={name}>
-                            <a href={link}>{name}</a>
-                        </li>
-                    ))
-                }
-            </ul>
-        </p>
+        <table className="links">
+            <tbody>
+                <tr>
+                    <td><strong>links: </strong></td>
+                    <td><ul>{
+                        links.map(({ name, link }) => (
+                            <li key={name}>
+                                <a href={link}>{name}</a>
+                            </li>
+                        ))
+                    }</ul></td>
+                </tr>
+            </tbody>
+        </table>
     </section>
 )

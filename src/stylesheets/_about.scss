@@ -4,13 +4,16 @@
 }
 
 .links {
-    display: inline;
-    padding-left: .75em;
+    td { 
+        vertical-align: top; 
+        padding: 0;
+    }
+    ul { padding-left: .2em; }
     li {
-        display: inline;
+        display: inline-block;
         &::after {
-            margin: 0 .5em;
-            content: "~";
+            margin-right: .35em;
+            content: "";
         }
 
         &:last-of-type::after { content: ""; }
