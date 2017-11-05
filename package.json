@@ -15,7 +15,6 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^4.0.0",
-    "font-awesome": "^4.7.0",
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
     "react-router": "^4.2.0",

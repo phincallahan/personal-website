@@ -2,8 +2,10 @@
 @import 'euler';
 @import 'about';
 
-$fa-font-path: "~font-awesome/fonts";
-@import '~font-awesome/scss/font-awesome.scss';
+/* External Libraries */
+@import '~shoelace-css/source/css/variables.css';
+@import '~shoelace-css/source/css/content.css';
+@import '~shoelace-css/source/css/normalize.css';
 
 @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville|Open+Sans');
 
@@ -42,7 +44,7 @@ $screen-widths: (1000px, 50vw) (960px,  60vw) (760px,  70vw)
 }
 
 /* Styles */
-body { 
+main { 
     margin-top: 1em;
 }
 
