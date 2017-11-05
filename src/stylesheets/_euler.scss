@@ -76,13 +76,13 @@
 .window-frame {
     position: absolute;
     vertical-align: -50%;
-    z-index: 99;
 }
 
 .window {
     background-color:#ebebeb;
     border-radius: 5px;
     box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    z-index: 99;
 
     position: relative;
     left: -50%;
