@@ -33,13 +33,12 @@ export class Window extends React.Component<Props, State> {
     }
 
     isCloseButton = (target: HTMLElement) => {
-        return target.classList.contains('close-button') || 
+        return target.classList.contains('close-button') ||
             target.parentElement.classList.contains('close-button');
     }
 
     grabHeader = (e1: React.MouseEvent<HTMLElement>) => {
-        if ((e1.target as any).classList && this.isCloseButton(e1.target as HTMLElement))
-        {
+        if ((e1.target as any).classList && this.isCloseButton(e1.target as HTMLElement)) {
             this.props.closeWindow();
             return e1.stopPropagation();
         }
