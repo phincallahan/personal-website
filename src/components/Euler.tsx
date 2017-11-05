@@ -66,13 +66,16 @@ export class Euler extends React.Component<{}, State> {
         if (index !== -1) {
             this.focusWindow(index);
         } else {
+            const x = document.body.clientWidth / 2;
+            const y = document.body.clientHeight / 2;
             this.setState({ 
-                windows: [...windows,  { problem, x: 0, y: 0 } ] 
+                windows: [...windows,  { problem, x, y } ] 
             });
         }
     }
 
     moveWindow = (index: number, x: number, y: number) => {
+        console.log("MOVED");
         this.setState({
             windows: [
                 ...this.state.windows.slice(0, index),
@@ -100,11 +103,10 @@ export class Euler extends React.Component<{}, State> {
         })
 
         let w = windows.map((window, i) => {
+            console.log(window.x, window.y);
             let solution = solutions[window.problem - 1];
 
-            let windowContents = solution.map(({code}, i) => 
-                (<pre key= {i}>{code}</pre>)
-            )
+            let windowContents = solution.map(({code}) => code)
 
             let props = {
                 key: window.problem,
@@ -118,16 +120,18 @@ export class Euler extends React.Component<{}, State> {
 
             return (
                 <Window {...props}>
-                    <div className="euler-panel"> 
-                        { ...windowContents } 
-                    </div>
+                    <pre className="euler-code">
+                        <code> 
+                            { solution.map(({code}) => code) } 
+                        </code>
+                    </pre>
                 </Window>
             );
         });
 
         return (
             <section id="euler">
-                <h3>Euler</h3>
+                <h4>Project Euler</h4>
                 <div className = 'window-manager'> {w} </div>
                 <div className = 'euler-grid'> {s} </div>
             </section>

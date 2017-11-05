@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 interface Props {
-    x: number, 
+    x: number,
     y: number,
     title: string,
     isActive: boolean;
@@ -11,8 +11,8 @@ interface Props {
 }
 
 interface State {
-    x: number;
-    y: number;
+    x?: number;
+    y?: number;
 }
 
 export class Window extends React.Component<Props, State> {
@@ -20,20 +20,21 @@ export class Window extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            x: this.props.x,
-            y: this.props.y
+            x: this.props.x || document.body.clientWidth / 2,
+            y: this.props.y || document.body.clientHeight / 2
         };
     }
 
     private moveHandler: EventListener;
     removeHandler = (e: Event) => {
+        console.log("mouse up");
         window.removeEventListener('mousemove', this.moveHandler);
         window.removeEventListener('mouseup', this.removeHandler);
         this.props.moveWindow(this.state.x, this.state.y)
     }
 
-    grabHeader = (e1: React.MouseEvent<HTMLDivElement>) => {
-        if((e1.target as HTMLElement).className == 'close-button') {
+    grabHeader = (e1: React.MouseEvent<HTMLElement>) => {
+        if ((e1.target as HTMLElement).className == 'close-button') {
             return
         }
 
@@ -42,7 +43,10 @@ export class Window extends React.Component<Props, State> {
         const x1 = e1.screenX;
         const y1 = e1.screenY;
 
+        console.log("PRINT");
+
         this.moveHandler = (e2: MouseEvent) => {
+            console.log("MOVE");
             this.setState({
                 x: Math.max(x0 + e2.screenX - x1, 0),
                 y: Math.max(y0 + e2.screenY - y1, 0)
@@ -54,31 +58,36 @@ export class Window extends React.Component<Props, State> {
     }
 
     render() {
-        let className = "code-window " + (this.props.isActive 
+        let className = "window " + (this.props.isActive
             ? "active-window"
-            : "")
+            : "");
 
-        let props = {
-            className,
-            onMouseDown: this.props.focusWindow,
-            style: {
+        let style = {
             left: this.state.x,
-                top: this.state.y
-            },
+            top: this.state.y
         }
 
+        console.log(style);
+
         return (
-            <div {...props}>
-                <div className = "header" onMouseDown = {this.grabHeader}>
-                    <span className = "window-title">{this.props.title}</span>
-                    <button className = "close-button" onClick = {this.props.closeWindow}> X </button>
-                </div>
-                <div className = "body">
-                    <div className = "left-edge"> </div>
-                    <div className = "bottom-edge"> </div>
-                    <div className = "right-edge"> </div>
-                    {this.props.children}
-                </div>
+            <div className="window-frame" style={style}>
+                <table className={className} onMouseDown={this.props.focusWindow}>
+                    <tbody>
+                        <tr className="window-header" onMouseDown = {this.grabHeader}>
+                            <td className="window-title">
+                                {this.props.title}
+                            </td>
+                            <td className="window-buttons">
+                                <button className="close-button" onClick={this.props.closeWindow}>
+                                    <i className="icon-cancel-circled"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td className="window-body" colSpan={2}> {this.props.children} </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         )
     }

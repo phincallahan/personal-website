@@ -2,7 +2,8 @@
   "scripts": {
     "deploy": "npm run build && rsync -rav -e ssh dist/* root@phineas.me:/var/www/html",
     "build": "webpack --config config/webpack.prod.js",
-    "start": "webpack-dev-server --open --config config/webpack.dev.js --host 0.0.0.0"
+    "start": "webpack-dev-server --open --config config/webpack.dev.js --host 0.0.0.0",
+    "start production": "webpack-dev-server --open --config config/webpack.prod.js --host 0.0.0.0"
   },
   "name": "personal-website",
   "version": "1.0.0",

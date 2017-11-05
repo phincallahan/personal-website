@@ -1,13 +1,17 @@
-$font-sizes: 
-    (1000px, 22px) 
-    (960px , 21px) 
-    (920px , 20px) 
-    (880px , 19px)
-    (840px , 18px) 
-    (800px , 17px) 
-    (760px , 16px) 
-    (720px , 15px)
-    (680px , 14px) 
-    (640px , 13px) 
-    (600px , 12px) 
-    (520px , 18px);
+$max-font-size: 1.6vw;
+$max-main-width: 60vw;
+
+$main-font-sizes:
+(1000px, 24px)
+(960px,  23px)
+(920px,  22px)
+(880px,  21px)
+(840px,  20px)
+(800px,  19px)
+(760px,  18px)
+(720px,  17px)
+(680px,  16px)
+(640px,  15px)
+(600px,  14px)
+(560px,  13px)
+(520px,  12px);
