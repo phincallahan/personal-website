@@ -6,8 +6,8 @@
 @import '~shoelace-css/source/css/variables.css';
 @import '~shoelace-css/source/css/content.css';
 @import '~shoelace-css/source/css/normalize.css';
-
 @import 'fontello/css/fontello.css';
+@import '~highlight.js/styles/grayscale.css';
 
 @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville|Open+Sans');
 
@@ -46,6 +46,10 @@ $screen-widths: (1000px, 50vw) (960px,  60vw) (760px,  70vw)
 }
 
 /* Styles */
+body {
+    overflow-x: hidden;
+}
+
 main { 
     margin-top: 1em;
 }

@@ -104,7 +104,7 @@ export class Euler extends React.Component<{}, State> {
         let w = windows.map((window, i) => {
             let solution = solutions[window.problem - 1];
 
-            let windowContents = solution.map(({code}) => code)
+            let code = solution.map(({code}) => code).join('\n');
 
             let props = {
                 key: window.problem,
@@ -119,8 +119,7 @@ export class Euler extends React.Component<{}, State> {
             return (
                 <Window {...props}>
                     <pre className="euler-code">
-                        <code> 
-                            { solution.map(({code}) => code) } 
+                        <code dangerouslySetInnerHTML={{__html: code}}> 
                         </code>
                     </pre>
                 </Window>

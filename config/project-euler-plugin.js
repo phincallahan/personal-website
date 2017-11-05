@@ -1,6 +1,8 @@
 const { Repository } = require('nodegit');
 const fs = require('fs');
 
+const hljs = require('highlight.js');
+
 class ProjectEulerPlugin {
     constructor(repoPath) {
         this.apply.bind(this);
@@ -43,11 +45,14 @@ class ProjectEulerPlugin {
     addFile(euler, path) {
         const m = path.match(/.*?problem(.*)\.(.*)/);
         if (m !== null && path.indexOf('assets/') === -1) {
-            let code = fs.readFileSync(m[0]).toString();
             let [prob, ext] = m.slice(1, 3);
+
+            let code = fs.readFileSync(m[0]).toString();
+            let { value } = hljs.highlight(ext, code);
+
             euler[prob] = euler[prob]
-                ? [...euler[prob], { ext, code }]
-                : [{ ext, code }];
+                ? [...euler[prob], { ext, code: value }]
+                : [{ ext, code: value }];
         }
     }
 
