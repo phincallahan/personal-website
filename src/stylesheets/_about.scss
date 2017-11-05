@@ -1,0 +1,17 @@
+.name { 
+    font-family: var(--headings-font-family); 
+    font-size: 1.1rem;
+}
+
+.links {
+    padding: 0;
+    li {
+        display: inline;
+        &::after {
+            margin: 0 .5em;
+            content: "~";
+        }
+
+        &:last-of-type::after { content: ""; }
+    }
+}

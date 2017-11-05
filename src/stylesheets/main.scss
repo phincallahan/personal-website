@@ -1,19 +1,58 @@
 @import 'variables';
 @import 'euler';
+@import 'about';
 
-@mixin screen-sizing($font-size) {
-    html { font-size: $font-size; } 
+$fa-font-path: "~font-awesome/fonts";
+@import '~font-awesome/scss/font-awesome.scss';
+
+@import url('https://fonts.googleapis.com/css?family=Libre+Baskerville|Open+Sans');
+
+/* Content Width */
+@mixin screen-sizing($main-width) {
     main { 
-        width: 33 * $font-size; 
+        width: $main-width;
         margin: auto;
-        margin-top: .75 * $font-size;
     }
 }
 
-@media all { @include screen-sizing(22px) }
+$screen-widths: (1000px, 50vw) (960px,  60vw) (760px,  70vw) 
+                (680px,  80vw) (640px,  85vw) (560px,  90vw);
 
-@each $screen-width, $font-size in $font-sizes {
+@media all { @include screen-sizing(50vw) }
+
+@each $screen-width, $main-width in $screen-widths {
     @media all and (max-width: $screen-width) {
-        @include screen-sizing($font-size);
+        @include screen-sizing($main-width);
     }
 }
+
+/* Root Variables */
+:root {
+    --font-sans-serif:  'Open Sans', sans-serif;
+    --font-serif: 'Libre Baskerville', serif;
+    --font-: 'Libre Baskerville', serif;
+    --color-black: #333;
+
+    --font-size-small: .707rem;
+
+    --font-size-h1: 3.998rem;
+    --font-size-h2: 2.827rem;
+    --font-size-h3: 1.999rem;
+    --font-size-h4: 1.414rem;
+}
+
+/* Styles */
+body { 
+    margin-top: 1em;
+}
+
+p { 
+    font-family: var(--font-serif);
+}
+
+section h4:first-of-type {
+    font-variant: small-caps;
+    font-weight: 500;
+}
+
+
