@@ -76,6 +76,9 @@
 .window-frame {
     position: absolute;
     vertical-align: -50%;
+    width: 0px;
+    height: 0px;
+    overflow: visible;
 }
 
 .window {
@@ -85,8 +88,7 @@
     z-index: 99;
 
     position: relative;
-    left: -50%;
-    transform: translateY(-50%);
+    transform: translate(-50%, -50%);
 
     .window-header {
         cursor: -webkit-grab; cursor: grab; cursor: -moz-grab;
@@ -107,10 +109,6 @@
 
     .window-body {
         font-size: .8rem;
-        max-width: 600px;
-        max-height: 60vh;
-        overflow: scroll;
-
         padding: 0;
     }
     
@@ -126,12 +124,21 @@
 
     .euler-code {
         background-color: var(--color-white);
-        code { background-color: inherit; }
-        max-width: inherit;
-        max-height: inherit;
+        code { 
+            padding-left: 0;
+            background-color: inherit; 
+        }
+
+        width: 60vw;
+        height: 60vh;
+
+        max-height: 800px;
+        max-width: 500px;
+
         border-radius: 0px;
-        margin-bottom: 0px;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
+
+        margin-bottom: 0px;
     }
 }
