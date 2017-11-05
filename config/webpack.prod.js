@@ -6,7 +6,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const ProjectEulerPlugin = require('./project-euler-plugin');
-
 module.exports = {
     entry: {
         app: path.resolve(__dirname, '../src/client.tsx'),
@@ -21,6 +20,17 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: /.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+                use: [{
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name].[ext]',
+                        outputPath: 'fonts/',
+                        publicPath: '../'
+                    }
+                }]
+            },
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
