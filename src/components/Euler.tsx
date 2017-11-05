@@ -75,7 +75,6 @@ export class Euler extends React.Component<{}, State> {
     }
 
     moveWindow = (index: number, x: number, y: number) => {
-        console.log("MOVED");
         this.setState({
             windows: [
                 ...this.state.windows.slice(0, index),
@@ -103,7 +102,6 @@ export class Euler extends React.Component<{}, State> {
         })
 
         let w = windows.map((window, i) => {
-            console.log(window.x, window.y);
             let solution = solutions[window.problem - 1];
 
             let windowContents = solution.map(({code}) => code)

@@ -27,15 +27,21 @@ export class Window extends React.Component<Props, State> {
 
     private moveHandler: EventListener;
     removeHandler = (e: Event) => {
-        console.log("mouse up");
         window.removeEventListener('mousemove', this.moveHandler);
         window.removeEventListener('mouseup', this.removeHandler);
         this.props.moveWindow(this.state.x, this.state.y)
     }
 
+    isCloseButton = (target: HTMLElement) => {
+        return target.classList.contains('close-button') || 
+            target.parentElement.classList.contains('close-button');
+    }
+
     grabHeader = (e1: React.MouseEvent<HTMLElement>) => {
-        if ((e1.target as HTMLElement).className == 'close-button') {
-            return
+        if ((e1.target as any).classList && this.isCloseButton(e1.target as HTMLElement))
+        {
+            this.props.closeWindow();
+            return e1.stopPropagation();
         }
 
         const x0 = this.state.x;
@@ -43,10 +49,7 @@ export class Window extends React.Component<Props, State> {
         const x1 = e1.screenX;
         const y1 = e1.screenY;
 
-        console.log("PRINT");
-
         this.moveHandler = (e2: MouseEvent) => {
-            console.log("MOVE");
             this.setState({
                 x: Math.max(x0 + e2.screenX - x1, 0),
                 y: Math.max(y0 + e2.screenY - y1, 0)
@@ -67,13 +70,11 @@ export class Window extends React.Component<Props, State> {
             top: this.state.y
         }
 
-        console.log(style);
-
         return (
             <div className="window-frame" style={style}>
                 <table className={className} onMouseDown={this.props.focusWindow}>
                     <tbody>
-                        <tr className="window-header" onMouseDown = {this.grabHeader}>
+                        <tr className="window-header" onMouseDown={this.grabHeader}>
                             <td className="window-title">
                                 {this.props.title}
                             </td>
