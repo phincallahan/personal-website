@@ -25,7 +25,7 @@ export const About = (props) => (
     <section className="about">
         <p>
             <b className="name"> Phineas Callahan </b>
-            is a math major @ <a href="carleton.edu">Carleton College</a>. He
+            is a math major at <a href="carleton.edu">Carleton College</a>. He
             enjoys writing clean code, solving algorithmic problems, and jamming out
             to <a href={spotifyDiscoLink}>disco</a>.
         </p>
