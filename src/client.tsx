@@ -7,10 +7,6 @@ import { Home } from './components/Home';
 require('./stylesheets/main.scss');
 
 render(
-    <BrowserRouter>
-        <main>
-            <Route exact path="/" component={Home}/>
-        </main>
-    </BrowserRouter>,
+    <Home/>,
     document.getElementById('root')
 );

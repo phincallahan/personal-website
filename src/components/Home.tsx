@@ -3,9 +3,9 @@ import { About } from './About';
 import { Euler } from './Euler';
 
 export const Home = () => (
-    <div>
+    <main>
         <About />
         <Euler />
-    </div>
+    </main>
 )
  
