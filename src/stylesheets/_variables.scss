@@ -1,17 +1,2 @@
-$max-font-size: 1.6vw;
-$max-main-width: 60vw;
-
-$main-font-sizes:
-(1000px, 24px)
-(960px,  23px)
-(920px,  22px)
-(880px,  21px)
-(840px,  20px)
-(800px,  19px)
-(760px,  18px)
-(720px,  17px)
-(680px,  16px)
-(640px,  15px)
-(600px,  14px)
-(560px,  13px)
-(520px,  12px);
+$screen-widths: (1000px, .55) (960px, .6) (760px, .7) 
+                (680px, .8) (640px, .85) (560px, .9);
