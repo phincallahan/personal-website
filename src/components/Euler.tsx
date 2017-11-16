@@ -2,6 +2,7 @@ import * as React from 'react';
 import 'whatwg-fetch';
 
 import { Window } from './Window';
+import { EulerSolution } from './EulerSolution';
 
 interface State {
     active: number;
@@ -11,9 +12,8 @@ interface State {
         problem: number;
     }[];
     solutions: {
-        code: string;
-        ext: string;
-    }[][];
+        [key: number]: string[]
+    }
 }
 
 export class Euler extends React.Component<{}, State> {
@@ -21,21 +21,10 @@ export class Euler extends React.Component<{}, State> {
         super();
 
         this.state = {
-            solutions: [],
+            solutions: require('../euler.json'),
             windows: [],
             active: -1
         }
-
-        fetch('/assets/euler.json')
-            .then(r => r.json())
-            .then(s => {
-                let solutions = []
-                for (let i = 1; i < 400; i++) {
-                    solutions.push(s[i]);
-                }
-
-                this.setState({ solutions })
-            })
     }
 
     focusWindow = (index: number) => {
@@ -87,25 +76,22 @@ export class Euler extends React.Component<{}, State> {
     render() {
         let { solutions, windows } = this.state;
 
-        let s = solutions.map((solution, i) => {
-            let isEmpty = solution === undefined;
+        let s = [];
+        for(let i = 1; i < 400; i++) {
+            let isEmpty = solutions[i] === undefined;
             var props = {
                 className: "euler-grid-cell",
-                onClick: this.openWindow.bind(this, i + 1)
+                onClick: this.openWindow.bind(this, i)
             };
 
-            return (
-                <div key = {i + 1} {...isEmpty? {} : props}>
-                    {isEmpty ? '' : i + 1}
+            s[i - 1] = (
+                <div key = {i} {...isEmpty? {} : props}>
+                    {isEmpty ? '' : i}
                 </div>
             );
-        })
+        }
 
         let w = windows.map((window, i) => {
-            let solution = solutions[window.problem - 1];
-
-            let code = solution.map(({code}) => code).join('\n');
-
             let props = {
                 key: window.problem,
                 x: window.x, y: window.y,
@@ -118,10 +104,7 @@ export class Euler extends React.Component<{}, State> {
 
             return (
                 <Window {...props}>
-                    <pre className="euler-code">
-                        <code dangerouslySetInnerHTML={{__html: code}}> 
-                        </code>
-                    </pre>
+                    <EulerSolution uris={solutions[window.problem]}/>
                 </Window>
             );
         });
