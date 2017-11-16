@@ -5,8 +5,8 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const ProjectEulerPlugin = require('./project-euler-plugin');
-module.exports = {
+
+const config = {
     entry: {
         app: path.resolve(__dirname, '../src/client.tsx'),
     },
@@ -14,35 +14,6 @@ module.exports = {
         filename: '[name].[chunkhash].js',
         path: path.resolve(__dirname, '../dist'),
         publicPath: '/'
-    },
-    resolve: {
-        extensions: ['.ts', '.tsx', '.js']
-    },
-    module: {
-        rules: [
-            {
-                test: /.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-                use: [{
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name].[ext]',
-                        outputPath: 'fonts/',
-                        publicPath: '../'
-                    }
-                }]
-            },
-            {
-                test: /\.scss$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: ["css-loader?minimize", "sass-loader"]
-                })
-            },
-            {
-                test: /\.tsx?$/,
-                use: 'ts-loader'
-            }
-        ]
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -68,7 +39,6 @@ module.exports = {
             }
         }),
         new ExtractTextPlugin("css/main.css"),
-        new ProjectEulerPlugin(process.env.EULER_PATH),
         new UglifyJSPlugin({
             uglifyOptions: {
                 beautify: false,
@@ -76,6 +46,12 @@ module.exports = {
                 compress: true,
                 comments: false
             }
-        })
+        }),
     ]
 }
+
+module.exports = require('./webpack.base.js').then(base => {
+    return require('deepmerge')(base, config, {
+        arrayMerge: (a, b) => a.concat(b)
+    });
+})
