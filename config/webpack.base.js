@@ -36,8 +36,10 @@ const config = {
         new CopyWebpackPlugin([
             {
                 from: `${process.env.EULER_PATH}/**/problem*.*`,
-                to: 'dist/project-euler/',
+                to: 'project-euler/',
+                toType: 'dir',
                 ignore: ['*.pyc', '*.txt'],
+                flatten: true,
                 transform: (content, filePath) => {
                     let ext = path.extname(filePath).replace('.', '');
                     let code = content.toString();
