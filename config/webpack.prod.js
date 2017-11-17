@@ -5,6 +5,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const VisualizerPlugin = require('webpack-visualizer-plugin');
 
 const config = {
     entry: {
@@ -49,7 +50,9 @@ const config = {
                     module.context.indexOf('shoelace-css') < 0; // Ignore shoelace, so it goes into css
             }
         }),
+        new webpack.optimize.AggressiveMergingPlugin(),
         new ExtractTextPlugin("css/main.css"),
+        new VisualizerPlugin(),
         new UglifyJSPlugin({
             uglifyOptions: {
                 beautify: false,

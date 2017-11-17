@@ -20,6 +20,7 @@
     "react-dom": "^15.6.2",
     "shoelace-css": "^1.0.0-beta24",
     "typescript": "^2.4.2",
+    "webpack-visualizer-plugin": "^0.1.11",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
