@@ -23,10 +23,6 @@ const config = {
                 }]
             },
             {
-                test: /\.scss$/,
-                use: ["style-loader", "css-loader", "sass-loader"]
-            },
-            {
                 test: /\.tsx?$/,
                 use: ['react-hot-loader/webpack', 'ts-loader']
             }

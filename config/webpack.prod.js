@@ -10,6 +10,17 @@ const config = {
     entry: {
         app: path.resolve(__dirname, '../src/client.tsx'),
     },
+    module: {
+        rules: [
+            {
+                test: /\.scss$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: ["css-loader?minimize", "sass-loader"]
+                })
+            },
+        ]
+    },
     output: {
         filename: '[name].[chunkhash].js',
         path: path.resolve(__dirname, '../dist'),
