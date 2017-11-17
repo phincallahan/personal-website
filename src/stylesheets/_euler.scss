@@ -1,48 +1,29 @@
 @import 'variables';
 
-@mixin euler-grid-sizing($cells) {
-    .euler-grid {
-        font-size: 11px;
-        width: $cells * 31px;
-        font-family: var(--font-monospace);
-
-        div {
-            width: 25px;
-            height: 25px;
-            margin: 3px;
-        }
-    }
-
-    .euler-grid-cell {
-        line-height: 25px;
-        border: 1px solid black;
-        margin: 2px;
-    }
-}
-
-@media (min-width: 992px) {
-    @include euler-grid-sizing(20);
-}
-
-@include euler-grid-sizing(10);
-
-@media (max-width: 600px) { 
-    @include euler-grid-sizing(5);
-}
-
 .euler-grid {
     margin: auto;
-    display: flex;
-    flex-wrap: wrap;
+    font-size: .8rem;
+    width: (2 + .2) * 20em;
+    background: white;
+    
+    div {
+        width: 2em;
+        height: 2em;
+        line-height: 2em;
+        float: left;;
+        border: 1px solid var(--color-white);
+        margin: .1em;
+    }
 
     .euler-grid-cell {
         transition: transform .5s ease-out;
         background: none;
         text-align: center;
+        border-color: var(--color-black);
 
         &:hover, &.active {
-            background-color: black;
-            color: white;
+            background-color: var(--color-black);
+            color: var(--color-white);
             cursor: pointer;
         }
 
@@ -73,7 +54,7 @@
     z-index: 99;
 
     position: relative;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
 
     .window-header {
         cursor: -webkit-grab; cursor: grab; cursor: -moz-grab;
@@ -146,11 +127,7 @@
 .euler-code-wrapper {
     background-color: var(--color-white);
     padding-bottom: .2em;
-
-    code { 
-        padding-left: 0;
-        background-color: inherit;
-    }
+    margin-bottom: 0px;
 
     width: 60vw;
     height: 60vh;
@@ -158,13 +135,15 @@
     max-height: 800px;
     max-width: 500px;
 
+    overflow: scroll;
+
     border: 1px solid var(--color-silver);
     border-radius: 0px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
 
-
-    overflow: scroll;
-
-    margin-bottom: 0px;
+    code { 
+        padding-left: 0;
+        background-color: inherit;
+    }
 }
