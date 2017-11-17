@@ -1,63 +1,47 @@
 import * as React from 'react';
 
-
-const Loaded = ({solutions}) => (
-    <pre className="euler-code">
-    {
-        solutions.map(({code, uri}) => ({
-            key: uri,
-            dangerouslySetInnerHTML: {__html: code}
-        })).map(props => <code {...props}></code>)
-    }
+const Loaded = ({code}) => (
+    <pre className="euler-code-wrapper">
+        <code dangerouslySetInnerHTML={{__html: code}}/>
     </pre>
 )
 
 const Error = ({err}) => (
-    <div>Unable to load code: {err.toString()}</div>
+    <div className="euler-code-wrapper">
+        Unable to load code: {err.toString()}
+    </div>
 )
-
 const Loading = () => (
-    <div>Loading...</div>
+    <div className="euler-code-wrapper">Loading...</div>
 )
 
 interface State {
-    solutions: string[] | null;
+    code: string | null;
     err: any;
 }
 
 interface Props { 
-    uris: string[];
+    uri: string;
 }
 
 export class EulerSolution extends React.Component<Props, State> {
     constructor(props) {
         super(props);
-
-        this.state = {
-            solutions: null,
-            err: null
-        }
+        this.state = { code: null, err: null };
     }
 
     componentWillMount() {
-        const reqs = this.props.uris.map(uri => {
-            return fetch(uri)
-                .then(r => r.text())
-                .then(code => ({code, uri}));
-        });
-
-        Promise.all(reqs).then(solutions => {
-            this.setState(() => ({ solutions }))
-        }).catch(err => {
-            this.setState(() => ({ err }))
-        });
+        fetch(this.props.uri)
+            .then(r => r.text())
+            .then(code => this.setState({ code }))
+            .catch(err => this.setState({ err }))
     }
 
     render() {
         if (this.state.err !== null) {
             return <Error err={this.state.err}/>
-        } else if (this.state.solutions) {
-            return <Loaded solutions={this.state.solutions}/>
+        } else if (this.state.code) {
+            return <Loaded code={this.state.code}/>
         } else {
             return <Loading/>
         }

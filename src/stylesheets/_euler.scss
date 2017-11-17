@@ -1,17 +1,6 @@
 @import 'variables';
 
 @mixin euler-grid-sizing($cells) {
-    // Calculations
-    // $margin: .1;
-    // $interior: 1 - 2 * $margin;
-
-    // $euler-cell-width: 100% / $cells;
-    // $euler-cell-border: 1px;
-    // $euler-cell-margin: 1px;
-    // $euler-cell-interior: floor($interior * $euler-cell-width);
-
-    // Styling
-    // width: $cells * ($euler-cell-interior + 2 * ($euler-cell-border + $euler-cell-margin));
     .euler-grid {
         font-size: 11px;
         width: $cells * 31px;
@@ -30,20 +19,6 @@
         margin: 2px;
     }
 }
-
-// @media all {
-//     .euler-grid { 
-//         @include euler-grid-sizing(550px, 20) 
-//     }
-// }
-
-// @each $screen-width, $main-size in $screen-widths {
-//     @media all and (max-width: $screen-width) {
-//         .euler-grid {
-//             @include euler-grid-sizing($main-size * $screen-width, $cells)
-//         }
-//     }
-// }
 
 @media (min-width: 992px) {
     @include euler-grid-sizing(20);
@@ -71,7 +46,7 @@
             cursor: pointer;
         }
 
-        &.active &.euler-code {
+        &.active &.euler-code-wrapper {
             display: block;
         }
     }
@@ -108,13 +83,47 @@
         }
     }
 
-    .window-title, .window-buttons { 
+    .window-tabs, .window-buttons { 
         padding: 2px 4px;
+    }
+
+    .window-tabs {
+        padding-bottom: 0px;
     }
 
     .window-buttons {
         text-align: right;
         height: 1rem;
+    }
+
+    .window-tab, .window-tab-active {
+        font-size: .9em;
+        position: relative;
+        margin: 0 .2rem;
+        display: inline-block;
+        cursor: pointer;
+        padding: 0 10px;
+        border: 1px solid #ebebeb;
+    }
+
+    .window-tab-active {
+        border: 1px solid var(--color-silver);
+        background-color: var(--color-white);
+
+        &:after {
+            box-sizing: content-box;
+            position: absolute;
+            left: -1px;
+            bottom: -5px;
+            height: 5px;
+            width: 100%;
+            margin: 0;
+            content: ' ';
+            display: inline-block;
+            background-color: var(--color-white);
+            border-left: 1px solid var(--color-silver);
+            border-right: 1px solid var(--color-silver);
+        }
     }
 
     .window-body {
@@ -134,13 +143,13 @@
 
 }
 
-.euler-code {
+.euler-code-wrapper {
     background-color: var(--color-white);
     padding-bottom: .2em;
 
     code { 
         padding-left: 0;
-        background-color: inherit; 
+        background-color: inherit;
     }
 
     width: 60vw;
@@ -149,9 +158,13 @@
     max-height: 800px;
     max-width: 500px;
 
+    border: 1px solid var(--color-silver);
     border-radius: 0px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+
+
+    overflow: scroll;
 
     margin-bottom: 0px;
 }

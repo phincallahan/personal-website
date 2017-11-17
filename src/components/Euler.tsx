@@ -1,7 +1,7 @@
 import * as React from 'react';
 import 'whatwg-fetch';
 
-import { Window } from './Window';
+import { WindowContainer, WindowTab } from './Window';
 import { EulerSolution } from './EulerSolution';
 
 interface State {
@@ -11,17 +11,15 @@ interface State {
         y: number;
         problem: number;
     }[];
-    solutions: {
-        [key: number]: string[]
-    }
 }
 
 export class Euler extends React.Component<{}, State> {
+    static solutions = require('../euler.json');
+
     constructor() {
         super();
 
         this.state = {
-            solutions: require('../euler.json'),
             windows: [],
             active: -1
         }
@@ -74,11 +72,11 @@ export class Euler extends React.Component<{}, State> {
     }
 
     render() {
-        let { solutions, windows } = this.state;
+        let { windows } = this.state;
 
         let s = [];
         for(let i = 1; i < 400; i++) {
-            let isEmpty = solutions[i] === undefined;
+            let isEmpty = Euler.solutions[i] === undefined;
             var props = {
                 className: "euler-grid-cell",
                 onClick: this.openWindow.bind(this, i)
@@ -95,17 +93,28 @@ export class Euler extends React.Component<{}, State> {
             let props = {
                 key: window.problem,
                 x: window.x, y: window.y,
-                title: `Problem ${window.problem}`,
                 isActive: i + 1 == this.state.windows.length,
                 closeWindow: this.closeWindow.bind(this, i),
                 focusWindow: this.focusWindow.bind(this, i),
                 moveWindow: this.moveWindow.bind(this, i)
             }
-
+        
             return (
-                <Window {...props}>
-                    <EulerSolution uris={solutions[window.problem]}/>
-                </Window>
+                <WindowContainer {...props}>
+                    {
+                        Euler.solutions[window.problem].map(uri => ({
+                            p: {
+                                title: uri.replace('project-euler/', ''),
+                                key: uri
+                            },
+                            u: uri
+                        })).map(({p, u}) => 
+                            <WindowTab {...p}>
+                                <EulerSolution uri={u}/>
+                            </WindowTab>
+                        )
+                    }
+                </WindowContainer>
             );
         });
 
