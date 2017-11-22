@@ -1,10 +1,15 @@
-import * as React from 'react';
-import { render } from 'react-dom';
-import { Home } from './components/Home';
-
 require('./stylesheets/main.scss');
 
-render(
-    <Home/>,
-    document.getElementById('root')
-);
+import * as m from 'mithril';
+import { store } from './store';
+
+const root = document.body;
+
+import { About } from './components';
+import { Euler, Windows } from './containers';
+
+const App: m.Component = { 
+    view: vnode => m("main", [ m(About), m(Windows), m(Euler) ])
+}
+
+m.mount(root, App);
