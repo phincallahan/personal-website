@@ -83,6 +83,7 @@ module.exports = new Promise((res, rej) => {
                     contents: euler
                 }),
                 new HtmlWebpackPlugin({
+                    template: 'src/index.html',
                     filename: 'index.html',
                     minify: {
                         collapseWhitespace: true,
