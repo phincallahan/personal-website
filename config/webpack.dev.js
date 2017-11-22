@@ -2,7 +2,6 @@ require('dotenv').config();
 const path = require('path');
 
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const config = {
     entry: path.resolve(__dirname, '../src/client.tsx'),
@@ -24,9 +23,6 @@ const config = {
         hot: true
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: path.join(__dirname, '../src/index.html'),
-        }),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
     ]

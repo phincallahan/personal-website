@@ -2,10 +2,10 @@ require('dotenv').config();
 const path = require('path');
 
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const VisualizerPlugin = require('webpack-visualizer-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 const config = {
     entry: {
@@ -28,16 +28,6 @@ const config = {
         publicPath: '/'
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: path.join(__dirname, '../src/index.html'),
-            filename: 'index.html',
-            minify: {
-                collapseWhitespace: true,
-                collapseInlineTagWhitespace: true,
-                removeComments: true,
-                removeRedundantAttributes: true
-            }
-        }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production')
         }),
@@ -61,6 +51,13 @@ const config = {
                 comments: false
             }
         }),
+        new CompressionPlugin({
+            asset: "[path].gz[query]",
+            algorithm: "gzip",
+            test: /\.js$|\.css$|\.html$/,
+            threshold: 10240,
+            minRatio: 0.8
+          })
     ]
 }
 
