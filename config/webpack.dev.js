@@ -3,7 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 const config = {
-    entry: path.resolve(__dirname, '../src/client.tsx'),
+    entry: path.resolve(__dirname, '../src/index.ts'),
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, '../dist')

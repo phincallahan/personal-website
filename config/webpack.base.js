@@ -27,7 +27,7 @@ const config = {
             },
             {
                 test: /\.tsx?$/,
-                use: ['react-hot-loader/webpack', 'ts-loader']
+                use: ['ts-loader']
             }
         ]
     },

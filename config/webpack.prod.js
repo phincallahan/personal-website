@@ -8,7 +8,7 @@ const CompressionPlugin = require('compression-webpack-plugin');
 
 const config = {
     entry: {
-        app: path.resolve(__dirname, '../src/client.tsx'),
+        app: path.resolve(__dirname, '../src/index.ts'),
     },
     module: {
         rules: [

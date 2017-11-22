@@ -1,3 +1,5 @@
+declare global { const require: (path: string) => any; }
+
 require('./stylesheets/main.scss');
 
 import * as m from 'mithril';
