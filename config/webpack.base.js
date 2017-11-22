@@ -6,6 +6,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VirtualModulePlugin = require('virtual-module-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+process.env.EULER_PATH = "/Users/phin/Code/project-euler"
+
 const config = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js']
